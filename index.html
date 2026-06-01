@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RDC 1.002/2025 × SCNES — CFO / ANVISA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --teal:#0B6E5A;--teal-m:#1D9E75;--teal-l:#E0F4EE;--teal-xl:#F0FAF6;
+  --red:#A32D2D;--red-l:#FCEBEB;--amber:#BA7517;--amber-l:#FAEEDA;
+  --blue:#185FA5;--blue-l:#E6F1FB;
+  --ink:#1A1A18;--ink-2:#3A3A36;--ink-3:#6B6B65;--ink-4:#9A9A94;
+  --smoke:#F5F4F0;--rule:#E2E1DC;--white:#FDFCF8;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 1.5rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.full{grid-column:1/-1}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}.full{grid-column:1}}
+.topbar{background:var(--ink);position:sticky;top:0;z-index:200;border-bottom:2px solid var(--teal-m)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.5rem;max-width:1140px;margin:0 auto;gap:1rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:32px;height:32px;background:var(--teal-m);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon svg{width:18px;height:18px;fill:white}
+.brand-name{font-family:var(--serif);font-size:1rem;color:white}
+.brand-sub{font-size:.62rem;color:rgba(255,255,255,.45);font-family:var(--mono);display:block;margin-top:-1px}
+.nav{display:flex;gap:3px;flex-wrap:wrap}
+.nav a{font-size:.7rem;padding:4px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.6);text-decoration:none;font-family:var(--mono);transition:.12s}
+.nav a:hover,.nav a.on{background:rgba(255,255,255,.12);color:white}
+.live{background:var(--teal-m);color:white;font-size:.6rem;padding:3px 8px;border-radius:12px;font-family:var(--mono);letter-spacing:.05em;flex-shrink:0}
+.filterbar{background:var(--smoke);border-bottom:1px solid var(--rule);padding:.55rem 0;position:sticky;top:52px;z-index:150}
+.fb-inner{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fb-lbl{font-size:.68rem;font-weight:500;color:var(--ink-3);font-family:var(--mono);white-space:nowrap}
+.fb-sel{font-size:.8rem;padding:5px 9px;border-radius:6px;border:1px solid var(--rule);background:var(--white);color:var(--ink-2);cursor:pointer;min-width:145px}
+.fb-reset{font-size:.7rem;padding:4px 11px;border-radius:6px;border:1px solid var(--rule);background:transparent;color:var(--ink-3);cursor:pointer}
+.fb-reset:hover{background:var(--rule)}
+.fb-scope{font-size:.7rem;color:var(--teal-m);font-family:var(--mono);margin-left:auto;font-weight:500}
+.hero{background:var(--ink);padding:3.25rem 0 2.5rem}
+.eyebrow{font-family:var(--mono);font-size:.67rem;letter-spacing:.12em;color:var(--teal-m);text-transform:uppercase;margin-bottom:.85rem}
+.hero-h1{font-family:var(--serif);font-size:clamp(1.85rem,3.2vw,2.9rem);color:white;line-height:1.1;letter-spacing:-.02em;margin-bottom:1rem;max-width:720px}
+.hero-h1 em{color:var(--teal-m);font-style:normal}
+.hero-sub{font-size:.93rem;color:rgba(255,255,255,.5);max-width:560px;line-height:1.7;margin-bottom:1.6rem}
+.hstats{display:flex;gap:1.75rem;flex-wrap:wrap}
+.hstat{border-left:2px solid var(--teal-m);padding-left:.9rem}
+.hstat-v{font-family:var(--serif);font-size:1.8rem;color:white;display:block;line-height:1}
+.hstat-l{font-size:.64rem;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:.04em;margin-top:3px}
+.chips{margin-top:1.1rem;display:flex;gap:5px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:2px 8px;font-size:.64rem;color:rgba(255,255,255,.4);font-family:var(--mono)}
+.sec{padding:2.5rem 0}
+.sec-alt{background:var(--smoke)}
+.sec-lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;color:var(--teal-m);text-transform:uppercase;margin-bottom:.4rem}
+.sec-h2{font-family:var(--serif);font-size:1.6rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:.55rem;line-height:1.15}
+.sec-intro{color:var(--ink-3);font-size:.87rem;max-width:640px;line-height:1.7;margin-bottom:1.6rem}
+.kpi{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:1.25rem;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi.t::before{background:var(--teal-m)}.kpi.r::before{background:var(--red)}
+.kpi.a::before{background:var(--amber)}.kpi.b::before{background:var(--blue)}
+.kv{font-family:var(--serif);font-size:2.1rem;line-height:1;letter-spacing:-.02em;display:block;margin-bottom:.3rem}
+.kv.t{color:var(--teal)}.kv.r{color:var(--red)}.kv.a{color:var(--amber)}.kv.b{color:var(--blue)}
+.kl{font-size:.79rem;color:var(--ink-3);line-height:1.4}
+.ks{font-size:.68rem;color:var(--ink-4);margin-top:.3rem;font-family:var(--mono)}
+.cc{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:1.25rem}
+.ct{font-size:.84rem;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+.cn{font-size:.67rem;color:var(--ink-4);margin-top:.6rem;font-family:var(--mono);line-height:1.5}
+.alert{border-radius:6px;padding:1.05rem 1.35rem;line-height:1.6;font-size:.86rem;margin:1.2rem 0}
+.ar{background:var(--red-l);border-left:3px solid var(--red)}
+.aa{background:var(--amber-l);border-left:3px solid var(--amber)}
+.at{background:var(--teal-l);border-left:3px solid var(--teal-m)}
+.ab{background:var(--blue-l);border-left:3px solid var(--blue)}
+.alert strong{font-weight:600}
+.atit{font-weight:600;display:block;margin-bottom:.22rem}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.bl{font-size:.77rem;color:var(--ink-2);width:108px;flex-shrink:0;text-align:right;line-height:1.2}
+.bl.s{width:80px;font-size:.71rem}
+.bl.xs{width:38px;font-size:.71rem;text-align:left}
+.bt{flex:1;background:var(--smoke);border-radius:3px;height:19px;overflow:hidden}
+.bf{height:100%;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;min-width:2px;transition:width .3s ease}
+.bf span{font-size:.69rem;font-weight:500;color:white;white-space:nowrap}
+.bc{font-size:.73rem;color:var(--ink-3);width:60px;text-align:right;font-family:var(--mono);flex-shrink:0}
+.sr{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.sl{font-size:.75rem;color:var(--ink-2);width:110px;flex-shrink:0;text-align:right}
+.sb{flex:1;height:21px;border-radius:3px;overflow:hidden;display:flex}
+.ss{height:100%;display:flex;align-items:center;justify-content:center}
+.ss span{font-size:.65rem;font-weight:500;color:white;white-space:nowrap;padding:0 3px}
+.st{font-size:.69rem;color:var(--ink-3);width:50px;text-align:right;font-family:var(--mono);flex-shrink:0}
+.leg{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:.85rem}
+.li{display:flex;align-items:center;gap:4px;font-size:.72rem;color:var(--ink-3)}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.dtbl{width:100%;border-collapse:collapse;font-size:.79rem}
+.dtbl th{text-align:left;font-size:.66rem;font-weight:600;color:var(--ink-3);padding:6px 8px;border-bottom:2px solid var(--rule);font-family:var(--mono);letter-spacing:.04em;white-space:nowrap;cursor:pointer}
+.dtbl th:hover{color:var(--teal)}
+.dtbl td{padding:6px 8px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:middle}
+.dtbl tr:last-child td{border-bottom:none}
+.dtbl tr:hover td{background:var(--teal-xl);cursor:pointer}
+.num{text-align:right;font-family:var(--mono);font-size:.75rem}
+.treg{display:inline-block;font-size:.62rem;padding:2px 6px;border-radius:3px;font-weight:500;white-space:nowrap}
+.mb{height:7px;border-radius:3px;overflow:hidden;display:flex;min-width:55px;margin-top:2px}
+.arg{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:1.5rem;position:relative;overflow:hidden}
+.arg-n{font-family:var(--serif);font-size:3.2rem;color:var(--smoke);position:absolute;top:.1rem;right:.9rem;line-height:1;pointer-events:none}
+.arg-tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--teal-m);text-transform:uppercase;margin-bottom:.42rem}
+.arg-title{font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:.42rem;line-height:1.3}
+.arg-body{font-size:.82rem;color:var(--ink-3);line-height:1.65}
+.arg-ev{background:var(--smoke);border-radius:5px;padding:.6rem .85rem;margin-top:.85rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);line-height:1.5}
+.arg-ev strong{color:var(--red)}
+.hm-row{display:flex;align-items:center;gap:2px;margin-bottom:2px}
+.hm-uf{width:38px;font-size:.71rem;font-weight:600;font-family:var(--mono);flex-shrink:0}
+.hm-cell{flex:1;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:500;color:white;padding:4px 2px;min-width:48px;cursor:default}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:.5rem}
+footer{background:var(--ink);padding:2rem 0}
+.fi{display:flex;gap:2rem;justify-content:space-between;flex-wrap:wrap}
+.fb{font-family:var(--serif);font-size:1rem;color:white;margin-bottom:.3rem}
+.fm{font-size:.7rem;color:rgba(255,255,255,.38);line-height:1.7;font-family:var(--mono)}
+.fn{font-size:.68rem;color:rgba(255,255,255,.28);font-family:var(--mono);line-height:1.65;max-width:360px;text-align:right}
+hr{border:none;border-top:1px solid var(--rule);margin:1.75rem 0}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+      <div><span class="brand-name">Observatório de Saúde Bucal</span><span class="brand-sub">CFO · Conselho Federal de Odontologia</span></div>
+    </div>
+    <nav class="nav">
+      <a href="#panorama">Panorama</a>
+      <a href="#detalhes">Por Estado</a>
+      <a href="#argumentos">Argumentos</a>
+      <a href="#risco">Mapa de Risco</a>
+    </nav>
+    <span class="live">SCNES ABR/2026</span>
+  </div>
+</nav>
+<div class="filterbar">
+  <div class="wrap fb-inner">
+    <span class="fb-lbl">FILTRAR:</span>
+    <select class="fb-sel" id="f-reg"><option value="">Todas as regiões</option><option>Norte</option><option>Nordeste</option><option>Centro-Oeste</option><option>Sudeste</option><option>Sul</option></select>
+    <select class="fb-sel" id="f-uf"><option value="">Todos os estados</option></select>
+    <button class="fb-reset" id="btn-rst">✕ Limpar</button>
+    <span class="fb-scope" id="f-scope">Brasil · 148.250 estabelecimentos</span>
+  </div>
+</div>
+<section class="hero" id="home">
+  <div class="wrap">
+    <p class="eyebrow">Nota técnica · RDC ANVISA nº 1.002/2025 · Impacto na rede odontológica brasileira</p>
+    <h1 class="hero-h1">A norma entra em vigor. Os dados mostram que <em>o país não está pronto.</em></h1>
+    <p class="hero-sub">Análise dos dados reais do SCNES cruza 148 mil estabelecimentos com as exigências da RDC 1.002/2025 e demonstra, estado a estado, por que a norma necessita de ajustes.</p>
+    <div class="hstats">
+      <div class="hstat"><span class="hstat-v">148.250</span><span class="hstat-l">ESTABELECIMENTOS</span></div>
+      <div class="hstat"><span class="hstat-v">227.105</span><span class="hstat-l">CONSULTÓRIOS</span></div>
+      <div class="hstat"><span class="hstat-v">23.344</span><span class="hstat-l">MUNICÍPIOS</span></div>
+      <div class="hstat"><span class="hstat-v">360</span><span class="hstat-l">DIAS PARA ADEQUAÇÃO</span></div>
+    </div>
+    <div class="chips">
+      <span class="chip">rlEstabInstFisiAssist202604</span>
+      <span class="chip">rlEstabAtendPrestConv202604</span>
+      <span class="chip">1.112.043 registros · Competência Abril/2026</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="panorama">
+  <div class="wrap">
+    <p class="sec-lbl">panorama nacional</p>
+    <h2 class="sec-h2">O retrato do país — filtrado em tempo real</h2>
+    <p class="sec-intro">Use os filtros no topo para navegar entre região e estado. Todos os indicadores se atualizam automaticamente com o recorte selecionado.</p>
+    <div class="g4" style="margin-bottom:1.4rem">
+      <div class="kpi t"><span class="kv t" id="k-e">148.250</span><div class="kl">estabelecimentos com odontologia cadastrada</div><div class="ks" id="k-es">universo completo</div></div>
+      <div class="kpi b"><span class="kv b" id="k-c">227.105</span><div class="kl">consultórios odontológicos cadastrados</div><div class="ks" id="k-cs">média: 1,53 por estab.</div></div>
+      <div class="kpi r"><span class="kv r" id="k-n">35.476</span><div class="kl">com NSP obrigatório (≥2 consultórios)</div><div class="ks" id="k-ns">23,9% do total</div></div>
+      <div class="kpi a"><span class="kv a" id="k-s">46.841</span><div class="kl">atendem o SUS (exclusivo ou misto)</div><div class="ks" id="k-ss">31,6% do total</div></div>
+    </div>
+    <div class="alert ar">
+      <span class="atit">⚠ Achado central para a ANVISA</span>
+      Os estados com <strong>maior dependência do SUS</strong> (PI 77%, MA 74%, PB 67%) são precisamente os que têm <strong>menor proporção de NSP</strong> (12–18%) e maior percentual de consultório único. A norma trata como equivalentes realidades estruturalmente opostas.
+    </div>
+    <div class="g2" style="margin-bottom:1.2rem">
+      <div class="cc"><div class="ct">Estabelecimentos por região/estado</div><div id="bars-e" style="margin-top:.85rem"></div><div class="cn">Tamanho × consultórios cadastrados</div></div>
+      <div class="cc"><div class="ct">% que atendem SUS</div><div id="bars-s" style="margin-top:.85rem"></div><div class="cn">SUS exclusivo + SUS + privado · CO_CONVENIO=1</div></div>
+    </div>
+    <div class="cc full" style="margin-bottom:1.2rem">
+      <div class="ph"><div class="ct">Composição por segmento de atendimento</div></div>
+      <div class="leg"><div class="li"><div class="ld" style="background:#185FA5"></div>SUS exclusivo</div><div class="li"><div class="ld" style="background:#5DCAA5"></div>SUS + privado</div><div class="li"><div class="ld" style="background:#BA7517"></div>Plano/seguro</div><div class="li"><div class="ld" style="background:#A32D2D"></div>Particular</div><div class="li"><div class="ld" style="background:#C8C6BC"></div>Sem convênio registrado</div></div>
+      <div id="stacked" ></div>
+      <div class="cn">Total de cada barra = n total de estabelecimentos · base: CO_CONVENIO do SCNES · 0,18% sem convênio registrado aparece em cinza</div>
+    </div>
+    <div class="g2">
+      <div class="cc"><div class="ct">Distribuição: nº consultórios por estabelecimento</div><div style="position:relative;height:220px;margin-top:.5rem"><canvas id="dist-nac"></canvas></div><div class="cn">75,9% têm 1 consultório — mesmo assim sujeitos a todas as exigências de CME da RDC</div></div>
+      <div class="cc"><div class="ct">NSP obrigatório (≥2 consultórios)</div><div id="bars-n" style="margin-top:.85rem"></div><div class="cn">DF: 40,8% · Nordeste: 12–18% · limiar que aciona obrigatoriedade do NSP</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="detalhes">
+  <div class="wrap">
+    <p class="sec-lbl">detalhamento interativo</p>
+    <h2 class="sec-h2">Análise por estado e município</h2>
+    <p class="sec-intro">Selecione uma região ou estado nos filtros acima — a tabela, o ranking de municípios e o gráfico de distribuição se atualizam automaticamente.</p>
+    <div class="cc full" style="margin-bottom:1.2rem">
+      <div class="ph">
+        <div class="ct" id="tbl-tit">Todos os estados</div>
+        <select class="fb-sel" id="tbl-sort" style="min-width:auto;width:195px">
+          <option value="n">↓ Nº estabelecimentos</option>
+          <option value="pct_sus">↓ % SUS</option>
+          <option value="pct_nsp">↓ % NSP obrig.</option>
+          <option value="consult">↓ Total consultórios</option>
+          <option value="sus">↓ Nº SUS absoluto</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="dtbl">
+          <thead><tr>
+            <th data-k="uf">UF</th><th>Região</th>
+            <th class="num" data-k="n">Estab. ▾</th>
+            <th class="num" data-k="consult">Consult.</th>
+            <th class="num" data-k="pct_sus">% SUS</th>
+            <th class="num" data-k="nsp">NSP obrig.</th>
+            <th class="num" data-k="pct_nsp">% NSP</th>
+            <th class="num" data-k="sus">SUS</th>
+            <th class="num" data-k="plano">Plano</th>
+            <th class="num" data-k="part">Partic.</th>
+            <th>Composição</th>
+            <th class="num" data-k="n_mun">Munic.</th>
+          </tr></thead>
+          <tbody id="uf-tb"></tbody>
+        </table>
+      </div>
+      <p class="cn">Clique em qualquer linha para filtrar · Fonte: SCNES Abr/2026 · % NSP = % dos estabelecimentos com ≥2 consultórios odontológicos</p>
+    </div>
+    <div class="g2">
+      <div class="cc"><div class="ct" id="mun-tit">Selecione um estado para ver top municípios</div><div id="bars-m" style="margin-top:.85rem"></div><div class="cn">Top municípios por nº de estabelecimentos com odontologia</div></div>
+      <div class="cc"><div class="ct" id="dist-tit">Distribuição de consultórios</div><div style="position:relative;height:195px;margin-top:.5rem"><canvas id="dist-uf"></canvas></div><div class="cn">Distribuição do nº de consultórios por estabelecimento · escopo filtrado</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="argumentos">
+  <div class="wrap">
+    <p class="sec-lbl">evidências técnicas</p>
+    <h2 class="sec-h2">Por que a RDC 1.002/2025 precisa de ajustes</h2>
+    <p class="sec-intro">Quatro argumentos baseados em dados reais do SCNES, construídos sobre a estrutura concreta dos serviços odontológicos brasileiros.</p>
+    <div class="g2">
+      <div class="arg"><span class="arg-n">01</span><div class="arg-tag">Porte do estabelecimento</div><div class="arg-title">A norma trata como equivalentes realidades estruturalmente opostas</div><p class="arg-body">A RDC impõe requisitos de CME, rastreabilidade e fluxo unidirecional construídos para serviços com múltiplos consultórios. Para os 112.553 com consultório único — 75,9% do total — essas exigências têm custo proporcionalmente muito superior à capacidade de adequação.</p><div class="arg-ev"><strong>112.553</strong> estab. com 1 consultório · <strong>75,9%</strong> do total nacional · CME exigida integralmente mesmo sem pessoal de apoio</div></div>
+      <div class="arg"><span class="arg-n">02</span><div class="arg-tag">Equidade regional</div><div class="arg-title">Nordeste e Norte concentram SUS mas têm menor capacidade de adequação</div><p class="arg-body">PI (77%), MA (74%), PB (67%) e RN (61%) têm a maior proporção de atendimento SUS e, simultaneamente, o menor índice de NSP (12–18%) — reflexo direto do consultório único dominante e dos menores orçamentos municipais. Norma uniforme sobre realidades desiguais é, por definição, regressiva.</p><div class="arg-ev">Nordeste: <strong>54,7% SUS</strong> · média <strong>1,41</strong> consult./estab. · PI e MA: &gt;74% SUS com &gt;82% consultório único</div></div>
+      <div class="arg"><span class="arg-n">03</span><div class="arg-tag">Prazo e capacidade institucional</div><div class="arg-title">35.476 estabelecimentos precisam criar NSP formalmente em 360 dias</div><p class="arg-body">NSP exige constituição formal, responsável técnico, Plano de Segurança e notificação de eventos adversos. Em hospitais, esse processo levou em média 36 meses. Aplicar simultaneamente a 35.476 estabelecimentos, muitos com 1–2 profissionais, em 360 dias é normativamente aspiracional mas operacionalmente inviável.</p><div class="arg-ev"><strong>35.476</strong> com NSP obrigatório · <strong>18.067</strong> no Sudeste · <strong>5.403</strong> no Nordeste · prazo: dez/2026</div></div>
+      <div class="arg"><span class="arg-n">04</span><div class="arg-tag">Infraestrutura de dados do Estado</div><div class="arg-title">A autoclave é obrigatória pela RDC, mas o SCNES nem a lista como equipamento odontológico</div><p class="arg-body">A tabela de equipamentos odontológicos do SCNES (códigos 71–77) não inclui autoclave. O RX dentário está em "Diagnóstico por Imagem" sem distinção analógico/digital. Isso inviabiliza monitoramento sistêmico da conformidade — o Estado não tem a base de dados para rastrear o que a norma exige.</p><div class="arg-ev">Autoclave: <strong>ausente</strong> da categoria "Odontologia" do SCNES · RX: sem distinção analógico/digital · conformidade: <strong>impossível de monitorar</strong> sistemicamente</div></div>
+    </div>
+    <div class="alert at" style="margin-top:1.4rem">
+      <span class="atit">Proposta técnica do CFO à ANVISA</span>
+      <strong>(1)</strong> Diferenciação normativa por porte: ≤2 CDs/turno único = protocolo CME proporcional. <strong>(2)</strong> Extensão do prazo para SUS Norte e Nordeste (mínimo +24 meses). <strong>(3)</strong> NSP faseado: 12 meses para PSP, 24 meses para plena operação. <strong>(4)</strong> Atualização do SCNES: autoclave, tipo RX e indicadores de conformidade como campos obrigatórios.
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="risco">
+  <div class="wrap">
+    <p class="sec-lbl">análise de risco regulatório</p>
+    <h2 class="sec-h2">O cruzamento mais revelador: SUS × consultório único</h2>
+    <p class="sec-intro">Estados com alto % SUS e alta proporção de consultório único concentram o maior risco de não conformidade — e o maior impacto social em caso de interdições.</p>
+    <div class="g2" style="margin-bottom:1.2rem">
+      <div class="cc"><div class="ct">Índice de risco regulatório por estado</div><div id="bars-r" style="margin-top:.85rem"></div><div class="cn">Índice = % SUS × % consultório único / 100</div></div>
+      <div class="cc"><div class="ct">% SUS × % consultório único — dispersão</div><div style="position:relative;height:280px;margin-top:.5rem"><canvas id="scatter"></canvas></div><div class="cn">Quadrante ↑→ = alto SUS + consultório único dominante = maior risco</div></div>
+    </div>
+    <div class="cc full">
+      <div class="ct" style="margin-bottom:.85rem">Heatmap de indicadores por estado</div>
+      <div id="heatmap" style="overflow-x:auto"></div>
+      <div class="cn">Verde = melhor · Vermelho = pior por coluna · Clique nas células para ver o valor</div>
+    </div>
+    <div class="alert aa" style="margin-top:1.2rem">
+      <span class="atit">Leitura para o Ministério da Saúde</span>
+      A combinação alto SUS + consultório único + baixo NSP não é incompetência de gestão — é a arquitetura histórica da atenção básica odontológica. Uma norma que não reconhece essa realidade vai produzir dois resultados previsíveis: <strong>(a)</strong> não conformidade ampla e não fiscalizada, esvaziando a norma; ou <strong>(b)</strong> fechamento de serviços SUS no Nordeste e Norte, retirando acesso odontológico de populações vulneráveis.
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap"><div class="fi">
+    <div><div class="fb">CFO · Conselho Federal de Odontologia</div><div class="fm">Observatório de Saúde Bucal · Nota Técnica RDC 1.002/2025<br>Dados: DATASUS · SCNES · competência abril/2026<br>rlEstabInstFisiAssist202604 (1.112.043 registros) + rlEstabAtendPrestConv202604<br>148.250 estabelecimentos · 227.105 consultórios · 23.344 municípios</div></div>
+    <div><p class="fn">Documento técnico elaborado com dados públicos do DATASUS para subsidiar a revisão da RDC ANVISA nº 1.002/2025. Análises de responsabilidade do CFO.</p></div>
+  </div></div>
+</footer>
+
+<script>
+const DB={"meta":{"competencia":"Abril/2026","total_estab":148250,"total_consult":227105,"obriga_nsp":35476,"pct_nsp":23.9,"n_municipios":23344,"dist_consult":{"0":221,"1":112553,"2":21089,"3":6638,"4":3624,"5":1382,"6":2743}},"regioes":[{"regiao":"Norte","n":8416,"consult":13132,"nsp":2089,"sus":3903,"plano":1550,"part":2943,"pct_sus":46.4,"pct_nsp":24.8,"media_c":1.56,"n_mun":1811},{"regiao":"Nordeste","n":30963,"consult":43668,"nsp":5403,"sus":16951,"plano":7262,"part":6695,"pct_sus":54.7,"pct_nsp":17.4,"media_c":1.41,"n_mun":7172},{"regiao":"Centro-Oeste","n":12513,"consult":19480,"nsp":3236,"sus":3564,"plano":4326,"part":4597,"pct_sus":28.5,"pct_nsp":25.9,"media_c":1.56,"n_mun":1973},{"regiao":"Sudeste","n":69383,"consult":109361,"nsp":18067,"sus":15061,"plano":33874,"part":20330,"pct_sus":21.7,"pct_nsp":26.0,"media_c":1.58,"n_mun":7652},{"regiao":"Sul","n":26934,"consult":41410,"nsp":6676,"sus":7362,"plano":10256,"part":9275,"pct_sus":27.3,"pct_nsp":24.8,"media_c":1.54,"n_mun":4714}],"ufs":[{"uf":"AC","regiao":"Norte","n":505,"consult":648,"nsp":75,"sus":285,"plano":84,"part":135,"pct_sus":56.4,"pct_nsp":14.9,"media_c":1.28,"n_mun":106,"top_mun":[{"cod":"1200402","nome":"Município 1200402","n":61,"consult":78,"nsp":9,"sus":44,"pct_sus":72.1,"pct_nsp":14.8},{"cod":"1200405","nome":"Município 1200405","n":41,"consult":50,"nsp":6,"sus":6,"pct_sus":14.6,"pct_nsp":14.6},{"cod":"1200407","nome":"Município 1200407","n":40,"consult":64,"nsp":13,"sus":10,"pct_sus":25.0,"pct_nsp":32.5},{"cod":"1200403","nome":"Município 1200403","n":37,"consult":43,"nsp":5,"sus":14,"pct_sus":37.8,"pct_nsp":13.5},{"cod":"1200404","nome":"Município 1200404","n":31,"consult":38,"nsp":5,"sus":2,"pct_sus":6.5,"pct_nsp":16.1},{"cod":"1200409","nome":"Município 1200409","n":30,"consult":59,"nsp":12,"sus":5,"pct_sus":16.7,"pct_nsp":40.0},{"cod":"1200400","nome":"Município 1200400","n":22,"consult":42,"nsp":7,"sus":1,"pct_sus":4.5,"pct_nsp":31.8},{"cod":"1200406","nome":"Município 1200406","n":20,"consult":32,"nsp":6,"sus":4,"pct_sus":20.0,"pct_nsp":30.0},{"cod":"1200202","nome":"Município 1200202","n":18,"consult":21,"nsp":2,"sus":17,"pct_sus":94.4,"pct_nsp":11.1},{"cod":"1200207","nome":"Município 1200207","n":10,"consult":12,"nsp":1,"sus":10,"pct_sus":100.0,"pct_nsp":10.0},{"cod":"1200408","nome":"Município 1200408","n":6,"consult":8,"nsp":1,"sus":1,"pct_sus":16.7,"pct_nsp":16.7},{"cod":"1200502","nome":"Município 1200502","n":6,"consult":6,"nsp":0,"sus":6,"pct_sus":100.0,"pct_nsp":0.0}],"dist_c":{"1":430,"2":40,"3":20,"4":10,"5":1,"6":4}},{"uf":"AL","regiao":"Nordeste","n":1650,"consult":2212,"nsp":243,"sus":1006,"plano":548,"part":92,"pct_sus":61.0,"pct_nsp":14.7,"media_c":1.34,"n_mun":346,"top_mun":[{"cod":"2704305","nome":"Município 2704305","n":241,"consult":262,"nsp":11,"sus":3,"pct_sus":1.2,"pct_nsp":4.6},{"cod":"2704309","nome":"Município 2704309","n":90,"consult":171,"nsp":41,"sus":11,"pct_sus":12.2,"pct_nsp":45.6},{"cod":"2704302","nome":"Maceió/AL","n":82,"consult":156,"nsp":15,"sus":63,"pct_sus":76.8,"pct_nsp":18.3},{"cod":"2704306","nome":"Município 2704306","n":73,"consult":146,"nsp":19,"sus":4,"pct_sus":5.5,"pct_nsp":26.0},{"cod":"2704307","nome":"Município 2704307","n":63,"consult":117,"nsp":21,"sus":11,"pct_sus":17.5,"pct_nsp":33.3},{"cod":"2704304","nome":"Município 2704304","n":49,"consult":89,"nsp":26,"sus":9,"pct_sus":18.4,"pct_nsp":53.1},{"cod":"2700302","nome":"Município 2700302","n":31,"consult":37,"nsp":5,"sus":30,"pct_sus":96.8,"pct_nsp":16.1},{"cod":"2706702","nome":"Município 2706702","n":27,"consult":28,"nsp":1,"sus":19,"pct_sus":70.4,"pct_nsp":3.7},{"cod":"2706302","nome":"Município 2706302","n":21,"consult":21,"nsp":0,"sus":20,"pct_sus":95.2,"pct_nsp":0.0},{"cod":"2704300","nome":"Município 2704300","n":18,"consult":32,"nsp":8,"sus":3,"pct_sus":16.7,"pct_nsp":44.4},{"cod":"2707702","nome":"Município 2707702","n":17,"consult":26,"nsp":1,"sus":16,"pct_sus":94.1,"pct_nsp":5.9},{"cod":"2700402","nome":"Município 2700402","n":15,"consult":15,"nsp":0,"sus":15,"pct_sus":100.0,"pct_nsp":0.0}],"dist_c":{"1":1407,"2":142,"3":45,"4":29,"5":5,"6":22}},{"uf":"AM","regiao":"Norte","n":1561,"consult":2482,"nsp":418,"sus":857,"plano":298,"part":405,"pct_sus":54.9,"pct_nsp":26.8,"media_c":1.59,"n_mun":314,"top_mun":[{"cod":"1302602","nome":"Município 1302602","n":161,"consult":215,"nsp":32,"sus":146,"pct_sus":90.7,"pct_nsp":19.9},{"cod":"1302605","nome":"Município 1302605","n":158,"consult":238,"nsp":36,"sus":17,"pct_sus":10.8,"pct_nsp":22.8},{"cod":"1302609","nome":"Município 1302609","n":109,"consult":199,"nsp":51,"sus":12,"pct_sus":11.0,"pct_nsp":46.8},{"cod":"1302603","nome":"Manaus/AM","n":106,"consult":149,"nsp":24,"sus":10,"pct_sus":9.4,"pct_nsp":22.6},{"cod":"1302606","nome":"Município 1302606","n":94,"consult":302,"nsp":30,"sus":13,"pct_sus":13.8,"pct_nsp":31.9},{"cod":"1302607","nome":"Município 1302607","n":86,"consult":173,"nsp":39,"sus":30,"pct_sus":34.9,"pct_nsp":45.3},{"cod":"1302604","nome":"Município 1302604","n":62,"consult":192,"nsp":42,"sus":14,"pct_sus":22.6,"pct_nsp":67.7},{"cod":"1302600","nome":"Município 1302600","n":55,"consult":112,"nsp":30,"sus":7,"pct_sus":12.7,"pct_nsp":54.5},{"cod":"1302601","nome":"Município 1302601","n":32,"consult":62,"nsp":28,"sus":0,"pct_sus":0.0,"pct_nsp":87.5},{"cod":"1302502","nome":"Município 1302502","n":12,"consult":13,"nsp":1,"sus":12,"pct_sus":100.0,"pct_nsp":8.3},{"cod":"1303532","nome":"Município 1303532","n":12,"consult":12,"nsp":0,"sus":12,"pct_sus":100.0,"pct_nsp":0.0},{"cod":"1301202","nome":"Município 1301202","n":11,"consult":13,"nsp":2,"sus":11,"pct_sus":100.0,"pct_nsp":18.2}],"dist_c":{"0":25,"1":1118,"2":263,"3":72,"4":49,"5":13,"6":21}},{"uf":"AP","regiao":"Norte","n":385,"consult":635,"nsp":118,"sus":136,"plano":91,"part":154,"pct_sus":35.3,"pct_nsp":30.6,"media_c":1.65,"n_mun":67,"top_mun":[{"cod":"1600304","nome":"Município 1600304","n":70,"consult":105,"nsp":15,"sus":0,"pct_sus":0.0,"pct_nsp":21.4},{"cod":"1600309","nome":"Município 1600309","n":43,"consult":93,"nsp":22,"sus":1,"pct_sus":2.3,"pct_nsp":51.2},{"cod":"1600302","nome":"Município 1600302","n":31,"consult":46,"nsp":9,"sus":20,"pct_sus":64.5,"pct_nsp":29.0},{"cod":"1600300","nome":"Município 1600300","n":26,"consult":50,"nsp":12,"sus":8,"pct_sus":30.8,"pct_nsp":46.2},{"cod":"1600305","nome":"Município 1600305","n":24,"consult":47,"nsp":9,"sus":0,"pct_sus":0.0,"pct_nsp":37.5},{"cod":"1600307","nome":"Município 1600307","n":22,"consult":47,"nsp":12,"sus":1,"pct_sus":4.5,"pct_nsp":54.5},{"cod":"1600306","nome":"Município 1600306","n":20,"consult":41,"nsp":9,"sus":4,"pct_sus":20.0,"pct_nsp":45.0},{"cod":"1600303","nome":"Macapá/AP","n":12,"consult":20,"nsp":3,"sus":5,"pct_sus":41.7,"pct_nsp":25.0},{"cod":"1600602","nome":"Município 1600602","n":12,"consult":13,"nsp":1,"sus":11,"pct_sus":91.7,"pct_nsp":8.3},{"cod":"1600402","nome":"Município 1600402","n":7,"consult":7,"nsp":0,"sus":7,"pct_sus":100.0,"pct_nsp":0.0},{"cod":"1600607","nome":"Município 1600607","n":6,"consult":14,"nsp":2,"sus":3,"pct_sus":50.0,"pct_nsp":33.3},{"cod":"1600604","nome":"Município 1600604","n":5,"consult":11,"nsp":4,"sus":0,"pct_sus":0.0,"pct_nsp":80.0}],"dist_c":{"1":267,"2":68,"3":20,"4":12,"5":3,"6":15}},{"uf":"BA","regiao":"Nordeste","n":8185,"consult":12143,"nsp":1717,"sus":3812,"plano":1768,"part":2588,"pct_sus":46.6,"pct_nsp":21.0,"media_c":1.48,"n_mun":1929,"top_mun":[{"cod":"2927403","nome":"Município 2927403","n":416,"consult":772,"nsp":128,"sus":16,"pct_sus":3.8,"pct_nsp":30.8},{"cod":"2927406","nome":"Município 2927406","n":266,"consult":497,"nsp":131,"sus":16,"pct_sus":6.0,"pct_nsp":49.2},{"cod":"2927400","nome":"Município 2927400","n":150,"consult":484,"nsp":83,"sus":90,"pct_sus":60.0,"pct_nsp":55.3},{"cod":"2927405","nome":"Município 2927405","n":147,"consult":308,"nsp":59,"sus":12,"pct_sus":8.2,"pct_nsp":40.1},{"cod":"2933302","nome":"Município 2933302","n":134,"consult":156,"nsp":12,"sus":36,"pct_sus":26.9,"pct_nsp":9.0},{"cod":"2927407","nome":"Município 2927407","n":110,"consult":225,"nsp":56,"sus":23,"pct_sus":20.9,"pct_nsp":50.9},{"cod":"2927409","nome":"Município 2927409","n":108,"consult":246,"nsp":58,"sus":28,"pct_sus":25.9,"pct_nsp":53.7},{"cod":"2900702","nome":"Município 2900702","n":74,"consult":82,"nsp":5,"sus":23,"pct_sus":31.1,"pct_nsp":6.8},{"cod":"2914803","nome":"Município 2914803","n":73,"consult":114,"nsp":17,"sus":6,"pct_sus":8.2,"pct_nsp":23.3},{"cod":"2933304","nome":"Município 2933304","n":70,"consult":134,"nsp":22,"sus":1,"pct_sus":1.4,"pct_nsp":31.4},{"cod":"2933309","nome":"Município 2933309","n":66,"consult":139,"nsp":20,"sus":2,"pct_sus":3.0,"pct_nsp":30.3},{"cod":"2910806","nome":"Município 2910806","n":60,"consult":86,"nsp":9,"sus":7,"pct_sus":11.7,"pct_nsp":15.0}],"dist_c":{"0":8,"1":6460,"2":980,"3":348,"4":207,"5":43,"6":139}},{"uf":"CE","regiao":"Nordeste","n":5898,"consult":8902,"nsp":1154,"sus":2305,"plano":1763,"part":1821,"pct_sus":39.1,"pct_nsp":19.6,"media_c":1.51,"n_mun":930,"top_mun":[{"cod":"2304403","nome":"Fortaleza/CE","n":510,"consult":585,"nsp":51,"sus":4,"pct_sus":0.8,"pct_nsp":10.0},{"cod":"2304405","nome":"Fortaleza/CE","n":392,"consult":570,"nsp":54,"sus":5,"pct_sus":1.3,"pct_nsp":13.8},{"cod":"2304409","nome":"Fortaleza/CE","n":359,"consult":630,"nsp":101,"sus":9,"pct_sus":2.5,"pct_nsp":28.1},{"cod":"2304407","nome":"Fortaleza/CE","n":354,"consult":712,"nsp":115,"sus":21,"pct_sus":5.9,"pct_nsp":32.5},{"cod":"2304404","nome":"Fortaleza/CE","n":319,"consult":523,"nsp":116,"sus":22,"pct_sus":6.9,"pct_nsp":36.4},{"cod":"2304406","nome":"Fortaleza/CE","n":290,"consult":407,"nsp":62,"sus":4,"pct_sus":1.4,"pct_nsp":21.4},{"cod":"2304402","nome":"Fortaleza/CE","n":163,"consult":367,"nsp":65,"sus":96,"pct_sus":58.9,"pct_nsp":39.9},{"cod":"2304400","nome":"Fortaleza/CE","n":147,"consult":362,"nsp":71,"sus":4,"pct_sus":2.7,"pct_nsp":48.3},{"cod":"2304408","nome":"Fortaleza/CE","n":68,"consult":125,"nsp":16,"sus":0,"pct_sus":0.0,"pct_nsp":23.5},{"cod":"2312902","nome":"Município 2312902","n":49,"consult":60,"nsp":9,"sus":23,"pct_sus":46.9,"pct_nsp":18.4},{"cod":"2307304","nome":"Município 2307304","n":37,"consult":65,"nsp":14,"sus":4,"pct_sus":10.8,"pct_nsp":37.8},{"cod":"2307305","nome":"Município 2307305","n":30,"consult":37,"nsp":5,"sus":2,"pct_sus":6.7,"pct_nsp":16.7}],"dist_c":{"0":6,"1":4738,"2":667,"3":189,"4":126,"5":41,"6":131}},{"uf":"DF","regiao":"Centro-Oeste","n":3090,"consult":5675,"nsp":1260,"sus":198,"plano":1198,"part":1685,"pct_sus":6.4,"pct_nsp":40.8,"media_c":1.84,"n_mun":19,"top_mun":[{"cod":"5300103","nome":"Brasília/DF","n":1038,"consult":1621,"nsp":317,"sus":24,"pct_sus":2.3,"pct_nsp":30.5},{"cod":"5300109","nome":"Brasília/DF","n":492,"consult":1033,"nsp":229,"sus":25,"pct_sus":5.1,"pct_nsp":46.5},{"cod":"5300104","nome":"Brasília/DF","n":316,"consult":578,"nsp":159,"sus":2,"pct_sus":0.6,"pct_nsp":50.3},{"cod":"5300106","nome":"Brasília/DF","n":286,"consult":521,"nsp":105,"sus":9,"pct_sus":3.1,"pct_nsp":36.7},{"cod":"5300100","nome":"Brasília/DF","n":279,"consult":624,"nsp":143,"sus":82,"pct_sus":29.4,"pct_nsp":51.3},{"cod":"5300105","nome":"Brasília/DF","n":238,"consult":444,"nsp":105,"sus":6,"pct_sus":2.5,"pct_nsp":44.1},{"cod":"5300107","nome":"Brasília/DF","n":210,"consult":466,"nsp":96,"sus":26,"pct_sus":12.4,"pct_nsp":45.7},{"cod":"5300102","nome":"Brasília/DF","n":134,"consult":216,"nsp":56,"sus":18,"pct_sus":13.4,"pct_nsp":41.8},{"cod":"5300101","nome":"Brasília/DF","n":40,"consult":81,"nsp":32,"sus":0,"pct_sus":0.0,"pct_nsp":80.0},{"cod":"5300108","nome":"Brasília/DF","n":32,"consult":55,"nsp":13,"sus":5,"pct_sus":15.6,"pct_nsp":40.6},{"cod":"5301803","nome":"Município 5301803","n":11,"consult":17,"nsp":1,"sus":0,"pct_sus":0.0,"pct_nsp":9.1},{"cod":"5301805","nome":"Município 5301805","n":4,"consult":6,"nsp":1,"sus":0,"pct_sus":0.0,"pct_nsp":25.0}],"dist_c":{"0":6,"1":1824,"2":733,"3":267,"4":125,"5":49,"6":86}},{"uf":"ES","regiao":"Sudeste","n":3404,"consult":5124,"nsp":896,"sus":943,"plano":1274,"part":1184,"pct_sus":27.7,"pct_nsp":26.3,"media_c":1.51,"n_mun":465,"top_mun":[{"cod":"3205303","nome":"Município 3205303","n":181,"consult":268,"nsp":46,"sus":2,"pct_sus":1.1,"pct_nsp":25.4},{"cod":"3205306","nome":"Município 3205306","n":111,"consult":185,"nsp":44,"sus":1,"pct_sus":0.9,"pct_nsp":39.6},{"cod":"3205203","nome":"Município 3205203","n":91,"consult":127,"nsp":19,"sus":3,"pct_sus":3.3,"pct_nsp":20.9},{"cod":"3201502","nome":"Município 3201502","n":83,"consult":92,"nsp":4,"sus":19,"pct_sus":22.9,"pct_nsp":4.8},{"cod":"3205307","nome":"Município 3205307","n":80,"consult":131,"nsp":35,"sus":2,"pct_sus":2.5,"pct_nsp":43.8},{"cod":"3203207","nome":"Município 3203207","n":79,"consult":107,"nsp":17,"sus":4,"pct_sus":5.1,"pct_nsp":21.5},{"cod":"3205206","nome":"Município 3205206","n":69,"consult":108,"nsp":19,"sus":4,"pct_sus":5.8,"pct_nsp":27.5},{"cod":"3205305","nome":"Município 3205305","n":69,"consult":104,"nsp":22,"sus":1,"pct_sus":1.4,"pct_nsp":31.9},{"cod":"3205309","nome":"Vitória/ES","n":67,"consult":101,"nsp":27,"sus":0,"pct_sus":0.0,"pct_nsp":40.3},{"cod":"3205209","nome":"Município 3205209","n":62,"consult":106,"nsp":27,"sus":0,"pct_sus":0.0,"pct_nsp":43.5},{"cod":"3205205","nome":"Município 3205205","n":57,"consult":87,"nsp":15,"sus":2,"pct_sus":3.5,"pct_nsp":26.3},{"cod":"3205207","nome":"Município 3205207","n":52,"consult":94,"nsp":26,"sus":9,"pct_sus":17.3,"pct_nsp":50.0}],"dist_c":{"0":4,"1":2504,"2":572,"3":180,"4":77,"5":20,"6":47}},{"uf":"GO","regiao":"Centro-Oeste","n":4800,"consult":7157,"nsp":1006,"sus":1622,"plano":1868,"part":1299,"pct_sus":33.8,"pct_nsp":21.0,"media_c":1.49,"n_mun":921,"top_mun":[{"cod":"5208706","nome":"Município 5208706","n":395,"consult":604,"nsp":77,"sus":10,"pct_sus":2.5,"pct_nsp":19.5},{"cod":"5208703","nome":"Município 5208703","n":241,"consult":374,"nsp":29,"sus":11,"pct_sus":4.6,"pct_nsp":12.0},{"cod":"5208705","nome":"Município 5208705","n":234,"consult":374,"nsp":39,"sus":6,"pct_sus":2.6,"pct_nsp":16.7},{"cod":"5208707","nome":"Goiânia/GO","n":185,"consult":298,"nsp":44,"sus":4,"pct_sus":2.2,"pct_nsp":23.8},{"cod":"5208709","nome":"Município 5208709","n":140,"consult":218,"nsp":40,"sus":3,"pct_sus":2.1,"pct_nsp":28.6},{"cod":"5208702","nome":"Município 5208702","n":109,"consult":225,"nsp":49,"sus":95,"pct_sus":87.2,"pct_nsp":45.0},{"cod":"5208704","nome":"Município 5208704","n":79,"consult":154,"nsp":35,"sus":3,"pct_sus":3.8,"pct_nsp":44.3},{"cod":"5208700","nome":"Município 5208700","n":77,"consult":165,"nsp":29,"sus":2,"pct_sus":2.6,"pct_nsp":37.7},{"cod":"5218805","nome":"Município 5218805","n":71,"consult":138,"nsp":27,"sus":10,"pct_sus":14.1,"pct_nsp":38.0},{"cod":"5218806","nome":"Município 5218806","n":65,"consult":121,"nsp":20,"sus":11,"pct_sus":16.9,"pct_nsp":30.8},{"cod":"5218809","nome":"Município 5218809","n":52,"consult":65,"nsp":10,"sus":4,"pct_sus":7.7,"pct_nsp":19.2},{"cod":"5201106","nome":"Município 5201106","n":51,"consult":56,"nsp":5,"sus":2,"pct_sus":3.9,"pct_nsp":9.8}],"dist_c":{"0":4,"1":3790,"2":530,"3":194,"4":116,"5":70,"6":96}},{"uf":"MA","regiao":"Nordeste","n":2605,"consult":3524,"nsp":466,"sus":1939,"plano":348,"part":317,"pct_sus":74.4,"pct_nsp":17.9,"media_c":1.35,"n_mun":791,"top_mun":[{"cod":"2111302","nome":"Município 2111302","n":100,"consult":171,"nsp":32,"sus":74,"pct_sus":74.0,"pct_nsp":32.0},{"cod":"2111307","nome":"Município 2111307","n":81,"consult":156,"nsp":42,"sus":3,"pct_sus":3.7,"pct_nsp":51.9},{"cod":"2111305","nome":"Município 2111305","n":79,"consult":122,"nsp":23,"sus":3,"pct_sus":3.8,"pct_nsp":29.1},{"cod":"2111309","nome":"Município 2111309","n":76,"consult":154,"nsp":36,"sus":5,"pct_sus":6.6,"pct_nsp":47.4},{"cod":"2111306","nome":"Município 2111306","n":63,"consult":95,"nsp":16,"sus":11,"pct_sus":17.5,"pct_nsp":25.4},{"cod":"2111300","nome":"São Luís/MA","n":39,"consult":74,"nsp":15,"sus":7,"pct_sus":17.9,"pct_nsp":38.5},{"cod":"2105302","nome":"Município 2105302","n":36,"consult":49,"nsp":8,"sus":25,"pct_sus":69.4,"pct_nsp":22.2},{"cod":"2112202","nome":"Município 2112202","n":34,"consult":40,"nsp":4,"sus":34,"pct_sus":100.0,"pct_nsp":11.8},{"cod":"2103002","nome":"Município 2103002","n":31,"consult":49,"nsp":10,"sus":26,"pct_sus":83.9,"pct_nsp":32.3},{"cod":"2111303","nome":"Município 2111303","n":23,"consult":34,"nsp":6,"sus":6,"pct_sus":26.1,"pct_nsp":26.1},{"cod":"2111304","nome":"Município 2111304","n":20,"consult":35,"nsp":10,"sus":1,"pct_sus":5.0,"pct_nsp":50.0},{"cod":"2103302","nome":"Município 2103302","n":19,"consult":33,"nsp":7,"sus":13,"pct_sus":68.4,"pct_nsp":36.8}],"dist_c":{"1":2139,"2":258,"3":92,"4":69,"5":17,"6":30}},{"uf":"MG","regiao":"Sudeste","n":19432,"consult":31422,"nsp":4892,"sus":5829,"plano":6210,"part":7359,"pct_sus":30.0,"pct_nsp":25.2,"media_c":1.62,"n_mun":3343,"top_mun":[{"cod":"3106203","nome":"Belo Horizonte/MG","n":569,"consult":813,"nsp":127,"sus":11,"pct_sus":1.9,"pct_nsp":22.3},{"cod":"3106205","nome":"Belo Horizonte/MG","n":417,"consult":740,"nsp":116,"sus":9,"pct_sus":2.2,"pct_nsp":27.8},{"cod":"3106200","nome":"Belo Horizonte/MG","n":309,"consult":729,"nsp":75,"sus":124,"pct_sus":40.1,"pct_nsp":24.3},{"cod":"3106206","nome":"Belo Horizonte/MG","n":272,"consult":582,"nsp":92,"sus":8,"pct_sus":2.9,"pct_nsp":33.8},{"cod":"3106209","nome":"Belo Horizonte/MG","n":251,"consult":425,"nsp":90,"sus":3,"pct_sus":1.2,"pct_nsp":35.9},{"cod":"3106204","nome":"Belo Horizonte/MG","n":231,"consult":649,"nsp":83,"sus":3,"pct_sus":1.3,"pct_nsp":35.9},{"cod":"3170205","nome":"Município 3170205","n":222,"consult":382,"nsp":69,"sus":2,"pct_sus":0.9,"pct_nsp":31.1},{"cod":"3106207","nome":"Belo Horizonte/MG","n":192,"consult":337,"nsp":64,"sus":3,"pct_sus":1.6,"pct_nsp":33.3},{"cod":"3131302","nome":"Município 3131302","n":175,"consult":221,"nsp":18,"sus":24,"pct_sus":13.7,"pct_nsp":10.3},{"cod":"3148002","nome":"Município 3148002","n":173,"consult":192,"nsp":16,"sus":23,"pct_sus":13.3,"pct_nsp":9.2},{"cod":"3105602","nome":"Município 3105602","n":165,"consult":181,"nsp":12,"sus":23,"pct_sus":13.9,"pct_nsp":7.3},{"cod":"3118602","nome":"Município 3118602","n":158,"consult":216,"nsp":27,"sus":28,"pct_sus":17.7,"pct_nsp":17.1}],"dist_c":{"0":30,"1":14510,"2":2777,"3":951,"4":542,"5":200,"6":422}},{"uf":"MS","regiao":"Centro-Oeste","n":2116,"consult":2911,"nsp":442,"sus":822,"plano":625,"part":665,"pct_sus":38.8,"pct_nsp":20.9,"media_c":1.38,"n_mun":431,"top_mun":[{"cod":"5002706","nome":"Município 5002706","n":111,"consult":180,"nsp":35,"sus":8,"pct_sus":7.2,"pct_nsp":31.5},{"cod":"5002700","nome":"Município 5002700","n":89,"consult":165,"nsp":32,"sus":61,"pct_sus":68.5,"pct_nsp":36.0},{"cod":"5002707","nome":"Município 5002707","n":66,"consult":113,"nsp":21,"sus":13,"pct_sus":19.7,"pct_nsp":31.8},{"cod":"5002705","nome":"Município 5002705","n":64,"consult":100,"nsp":19,"sus":3,"pct_sus":4.7,"pct_nsp":29.7},{"cod":"5002709","nome":"Município 5002709","n":51,"consult":73,"nsp":13,"sus":12,"pct_sus":23.5,"pct_nsp":25.5},{"cod":"5002704","nome":"Campo Grande/MS","n":44,"consult":78,"nsp":20,"sus":1,"pct_sus":2.3,"pct_nsp":45.5},{"cod":"5002703","nome":"Município 5002703","n":42,"consult":62,"nsp":10,"sus":13,"pct_sus":31.0,"pct_nsp":23.8},{"cod":"5006202","nome":"Município 5006202","n":31,"consult":38,"nsp":7,"sus":7,"pct_sus":22.6,"pct_nsp":22.6},{"cod":"5001103","nome":"Município 5001103","n":27,"consult":34,"nsp":2,"sus":4,"pct_sus":14.8,"pct_nsp":7.4},{"cod":"5003709","nome":"Município 5003709","n":27,"consult":56,"nsp":11,"sus":5,"pct_sus":18.5,"pct_nsp":40.7},{"cod":"5006303","nome":"Município 5006303","n":27,"consult":31,"nsp":4,"sus":4,"pct_sus":14.8,"pct_nsp":14.8},{"cod":"5003706","nome":"Município 5003706","n":25,"consult":28,"nsp":1,"sus":5,"pct_sus":20.0,"pct_nsp":4.0}],"dist_c":{"0":10,"1":1664,"2":279,"3":83,"4":37,"5":15,"6":28}},{"uf":"MT","regiao":"Centro-Oeste","n":2507,"consult":3737,"nsp":528,"sus":922,"plano":635,"part":948,"pct_sus":36.8,"pct_nsp":21.1,"media_c":1.49,"n_mun":602,"top_mun":[{"cod":"5103406","nome":"Município 5103406","n":113,"consult":167,"nsp":18,"sus":4,"pct_sus":3.5,"pct_nsp":15.9},{"cod":"5103407","nome":"Município 5103407","n":96,"consult":235,"nsp":41,"sus":5,"pct_sus":5.2,"pct_nsp":42.7},{"cod":"5103405","nome":"Município 5103405","n":81,"consult":103,"nsp":9,"sus":1,"pct_sus":1.2,"pct_nsp":11.1},{"cod":"5107924","nome":"Município 5107924","n":60,"consult":114,"nsp":25,"sus":4,"pct_sus":6.7,"pct_nsp":41.7},{"cod":"5103403","nome":"Cuiabá/MT","n":49,"consult":69,"nsp":9,"sus":19,"pct_sus":38.8,"pct_nsp":18.4},{"cod":"5103409","nome":"Município 5103409","n":48,"consult":109,"nsp":21,"sus":3,"pct_sus":6.2,"pct_nsp":43.8},{"cod":"5107603","nome":"Município 5107603","n":45,"consult":60,"nsp":13,"sus":2,"pct_sus":4.4,"pct_nsp":28.9},{"cod":"5103400","nome":"Município 5103400","n":40,"consult":105,"nsp":23,"sus":2,"pct_sus":5.0,"pct_nsp":57.5},{"cod":"5103402","nome":"Município 5103402","n":36,"consult":62,"nsp":13,"sus":34,"pct_sus":94.4,"pct_nsp":36.1},{"cod":"5107925","nome":"Município 5107925","n":30,"consult":73,"nsp":15,"sus":1,"pct_sus":3.3,"pct_nsp":50.0},{"cod":"5106229","nome":"Município 5106229","n":27,"consult":29,"nsp":2,"sus":0,"pct_sus":0.0,"pct_nsp":7.4},{"cod":"5105150","nome":"Município 5105150","n":26,"consult":46,"nsp":11,"sus":0,"pct_sus":0.0,"pct_nsp":42.3}],"dist_c":{"0":7,"1":1972,"2":283,"3":101,"4":61,"5":25,"6":58}},{"uf":"PA","regiao":"Norte","n":3247,"consult":4806,"nsp":693,"sus":1618,"plano":647,"part":974,"pct_sus":49.8,"pct_nsp":21.3,"media_c":1.48,"n_mun":697,"top_mun":[{"cod":"1501406","nome":"Município 1501406","n":326,"consult":505,"nsp":42,"sus":2,"pct_sus":0.6,"pct_nsp":12.9},{"cod":"1501407","nome":"Município 1501407","n":155,"consult":311,"nsp":62,"sus":3,"pct_sus":1.9,"pct_nsp":40.0},{"cod":"1501405","nome":"Município 1501405","n":119,"consult":152,"nsp":16,"sus":2,"pct_sus":1.7,"pct_nsp":13.4},{"cod":"1501409","nome":"Município 1501409","n":87,"consult":137,"nsp":28,"sus":8,"pct_sus":9.2,"pct_nsp":32.2},{"cod":"1501402","nome":"Belém/PA","n":68,"consult":136,"nsp":30,"sus":64,"pct_sus":94.1,"pct_nsp":44.1},{"cod":"1501403","nome":"Município 1501403","n":64,"consult":84,"nsp":10,"sus":3,"pct_sus":4.7,"pct_nsp":15.6},{"cod":"1501400","nome":"Município 1501400","n":38,"consult":95,"nsp":14,"sus":5,"pct_sus":13.2,"pct_nsp":36.8},{"cod":"1505534","nome":"Município 1505534","n":35,"consult":69,"nsp":16,"sus":5,"pct_sus":14.3,"pct_nsp":45.7},{"cod":"1505537","nome":"Município 1505537","n":33,"consult":81,"nsp":18,"sus":7,"pct_sus":21.2,"pct_nsp":54.5},{"cod":"1505539","nome":"Município 1505539","n":32,"consult":55,"nsp":13,"sus":0,"pct_sus":0.0,"pct_nsp":40.6},{"cod":"1505532","nome":"Município 1505532","n":32,"consult":44,"nsp":8,"sus":13,"pct_sus":40.6,"pct_nsp":25.0},{"cod":"1505536","nome":"Município 1505536","n":31,"consult":62,"nsp":19,"sus":1,"pct_sus":3.2,"pct_nsp":61.3}],"dist_c":{"0":5,"1":2549,"2":399,"3":131,"4":76,"5":23,"6":64}},{"uf":"PB","regiao":"Nordeste","n":2798,"consult":3528,"nsp":356,"sus":1863,"plano":427,"part":504,"pct_sus":66.6,"pct_nsp":12.7,"media_c":1.26,"n_mun":764,"top_mun":[{"cod":"2507503","nome":"Município 2507503","n":294,"consult":381,"nsp":43,"sus":64,"pct_sus":21.8,"pct_nsp":14.6},{"cod":"2504002","nome":"Município 2504002","n":95,"consult":116,"nsp":10,"sus":85,"pct_sus":89.5,"pct_nsp":10.5},{"cod":"2507509","nome":"Município 2507509","n":89,"consult":140,"nsp":25,"sus":5,"pct_sus":5.6,"pct_nsp":28.1},{"cod":"2507502","nome":"Município 2507502","n":82,"consult":158,"nsp":26,"sus":59,"pct_sus":72.0,"pct_nsp":31.7},{"cod":"2507507","nome":"João Pessoa/PB","n":55,"consult":79,"nsp":12,"sus":8,"pct_sus":14.5,"pct_nsp":21.8},{"cod":"2507504","nome":"Município 2507504","n":44,"consult":54,"nsp":5,"sus":3,"pct_sus":6.8,"pct_nsp":11.4},{"cod":"2507500","nome":"Município 2507500","n":43,"consult":54,"nsp":3,"sus":2,"pct_sus":4.7,"pct_nsp":7.0},{"cod":"2507505","nome":"Município 2507505","n":40,"consult":74,"nsp":9,"sus":6,"pct_sus":15.0,"pct_nsp":22.5},{"cod":"2504005","nome":"Município 2504005","n":38,"consult":50,"nsp":7,"sus":18,"pct_sus":47.4,"pct_nsp":18.4},{"cod":"2513702","nome":"Município 2513702","n":34,"consult":34,"nsp":0,"sus":33,"pct_sus":97.1,"pct_nsp":0.0},{"cod":"2507506","nome":"Município 2507506","n":32,"consult":56,"nsp":10,"sus":2,"pct_sus":6.2,"pct_nsp":31.2},{"cod":"2516202","nome":"Município 2516202","n":29,"consult":34,"nsp":2,"sus":28,"pct_sus":96.6,"pct_nsp":6.9}],"dist_c":{"1":2442,"2":159,"3":108,"4":61,"5":6,"6":22}},{"uf":"PE","regiao":"Nordeste","n":4855,"consult":6765,"nsp":791,"sus":2738,"plano":1370,"part":732,"pct_sus":56.4,"pct_nsp":16.3,"media_c":1.39,"n_mun":887,"top_mun":[{"cod":"2611603","nome":"Município 2611603","n":196,"consult":249,"nsp":30,"sus":22,"pct_sus":11.2,"pct_nsp":15.3},{"cod":"2611600","nome":"Município 2611600","n":165,"consult":367,"nsp":53,"sus":102,"pct_sus":61.8,"pct_nsp":32.1},{"cod":"2611605","nome":"Município 2611605","n":160,"consult":240,"nsp":28,"sus":9,"pct_sus":5.6,"pct_nsp":17.5},{"cod":"2611606","nome":"Recife/PE","n":141,"consult":253,"nsp":36,"sus":5,"pct_sus":3.5,"pct_nsp":25.5},{"cod":"2611604","nome":"Município 2611604","n":97,"consult":147,"nsp":31,"sus":1,"pct_sus":1.0,"pct_nsp":32.0},{"cod":"2611609","nome":"Município 2611609","n":94,"consult":186,"nsp":45,"sus":3,"pct_sus":3.2,"pct_nsp":47.9},{"cod":"2611607","nome":"Município 2611607","n":63,"consult":200,"nsp":21,"sus":12,"pct_sus":19.0,"pct_nsp":33.3},{"cod":"2607902","nome":"Município 2607902","n":57,"consult":63,"nsp":4,"sus":51,"pct_sus":89.5,"pct_nsp":7.0},{"cod":"2604102","nome":"Município 2604102","n":47,"consult":56,"nsp":8,"sus":42,"pct_sus":89.4,"pct_nsp":17.0},{"cod":"2607906","nome":"Município 2607906","n":45,"consult":50,"nsp":5,"sus":10,"pct_sus":22.2,"pct_nsp":11.1},{"cod":"2607909","nome":"Município 2607909","n":42,"consult":65,"nsp":18,"sus":3,"pct_sus":7.1,"pct_nsp":42.9},{"cod":"2611102","nome":"Município 2611102","n":41,"consult":55,"nsp":11,"sus":23,"pct_sus":56.1,"pct_nsp":26.8}],"dist_c":{"0":2,"1":4062,"2":467,"3":150,"4":83,"5":32,"6":59}},{"uf":"PI","regiao":"Nordeste","n":1933,"consult":2542,"nsp":276,"sus":1495,"plano":142,"part":296,"pct_sus":77.3,"pct_nsp":14.3,"media_c":1.32,"n_mun":693,"top_mun":[{"cod":"2211002","nome":"Município 2211002","n":115,"consult":171,"nsp":28,"sus":74,"pct_sus":64.3,"pct_nsp":24.3},{"cod":"2211007","nome":"Município 2211007","n":59,"consult":110,"nsp":24,"sus":13,"pct_sus":22.0,"pct_nsp":40.7},{"cod":"2211003","nome":"Município 2211003","n":53,"consult":81,"nsp":15,"sus":8,"pct_sus":15.1,"pct_nsp":28.3},{"cod":"2211005","nome":"Município 2211005","n":51,"consult":57,"nsp":4,"sus":19,"pct_sus":37.3,"pct_nsp":7.8},{"cod":"2211006","nome":"Município 2211006","n":46,"consult":153,"nsp":10,"sus":15,"pct_sus":32.6,"pct_nsp":21.7},{"cod":"2211009","nome":"Município 2211009","n":40,"consult":67,"nsp":18,"sus":6,"pct_sus":15.0,"pct_nsp":45.0},{"cod":"2208002","nome":"Município 2208002","n":30,"consult":39,"nsp":3,"sus":26,"pct_sus":86.7,"pct_nsp":10.0},{"cod":"2203902","nome":"Município 2203902","n":24,"consult":25,"nsp":1,"sus":24,"pct_sus":100.0,"pct_nsp":4.2},{"cod":"2207002","nome":"Município 2207002","n":22,"consult":23,"nsp":1,"sus":13,"pct_sus":59.1,"pct_nsp":4.5},{"cod":"2207702","nome":"Município 2207702","n":19,"consult":20,"nsp":1,"sus":18,"pct_sus":94.7,"pct_nsp":5.3},{"cod":"2202202","nome":"Município 2202202","n":17,"consult":19,"nsp":2,"sus":12,"pct_sus":70.6,"pct_nsp":11.8},{"cod":"2207705","nome":"Município 2207705","n":16,"consult":20,"nsp":3,"sus":1,"pct_sus":6.2,"pct_nsp":18.8}],"dist_c":{"0":1,"1":1656,"2":159,"3":58,"4":34,"5":9,"6":16}},{"uf":"PR","regiao":"Sul","n":10240,"consult":16239,"nsp":2733,"sus":2629,"plano":4284,"part":3310,"pct_sus":25.7,"pct_nsp":26.7,"media_c":1.59,"n_mun":1703,"top_mun":[{"cod":"4106903","nome":"Curitiba/PR","n":798,"consult":1191,"nsp":194,"sus":7,"pct_sus":0.9,"pct_nsp":24.3},{"cod":"4106905","nome":"Curitiba/PR","n":353,"consult":561,"nsp":110,"sus":11,"pct_sus":3.1,"pct_nsp":31.2},{"cod":"4106909","nome":"Curitiba/PR","n":342,"consult":563,"nsp":127,"sus":3,"pct_sus":0.9,"pct_nsp":37.1},{"cod":"4106906","nome":"Curitiba/PR","n":315,"consult":559,"nsp":122,"sus":2,"pct_sus":0.6,"pct_nsp":38.7},{"cod":"4106907","nome":"Curitiba/PR","n":304,"consult":516,"nsp":101,"sus":4,"pct_sus":1.3,"pct_nsp":33.2},{"cod":"4106900","nome":"Curitiba/PR","n":246,"consult":707,"nsp":75,"sus":90,"pct_sus":36.6,"pct_nsp":30.5},{"cod":"4113702","nome":"Município 4113702","n":165,"consult":262,"nsp":49,"sus":54,"pct_sus":32.7,"pct_nsp":29.7},{"cod":"4119902","nome":"Município 4119902","n":146,"consult":189,"nsp":33,"sus":62,"pct_sus":42.5,"pct_nsp":22.6},{"cod":"4106904","nome":"Curitiba/PR","n":116,"consult":201,"nsp":54,"sus":1,"pct_sus":0.9,"pct_nsp":46.6},{"cod":"4101402","nome":"Município 4101402","n":114,"consult":155,"nsp":8,"sus":15,"pct_sus":13.2,"pct_nsp":7.0},{"cod":"4113705","nome":"Município 4113705","n":92,"consult":190,"nsp":20,"sus":2,"pct_sus":2.2,"pct_nsp":21.7},{"cod":"4104300","nome":"Município 4104300","n":75,"consult":91,"nsp":10,"sus":19,"pct_sus":25.3,"pct_nsp":13.3}],"dist_c":{"0":17,"1":7490,"2":1674,"3":508,"4":266,"5":106,"6":179}},{"uf":"RJ","regiao":"Sudeste","n":10907,"consult":17703,"nsp":2999,"sus":2423,"plano":5958,"part":2500,"pct_sus":22.2,"pct_nsp":27.5,"media_c":1.62,"n_mun":625,"top_mun":[{"cod":"3304551","nome":"Rio de Janeiro/RJ","n":1269,"consult":1486,"nsp":201,"sus":0,"pct_sus":0.0,"pct_nsp":15.8},{"cod":"3304559","nome":"Rio de Janeiro/RJ","n":904,"consult":1701,"nsp":301,"sus":27,"pct_sus":3.0,"pct_nsp":33.3},{"cod":"3304557","nome":"Rio de Janeiro/RJ","n":507,"consult":776,"nsp":130,"sus":31,"pct_sus":6.1,"pct_nsp":25.6},{"cod":"3304554","nome":"Rio de Janeiro/RJ","n":423,"consult":678,"nsp":123,"sus":11,"pct_sus":2.6,"pct_nsp":29.1},{"cod":"3304556","nome":"Rio de Janeiro/RJ","n":328,"consult":553,"nsp":105,"sus":73,"pct_sus":22.3,"pct_nsp":32.0},{"cod":"3304550","nome":"Rio de Janeiro/RJ","n":314,"consult":487,"nsp":95,"sus":7,"pct_sus":2.2,"pct_nsp":30.3},{"cod":"3304555","nome":"Rio de Janeiro/RJ","n":301,"consult":621,"nsp":123,"sus":29,"pct_sus":9.6,"pct_nsp":40.9},{"cod":"3304552","nome":"Rio de Janeiro/RJ","n":239,"consult":468,"nsp":91,"sus":145,"pct_sus":60.7,"pct_nsp":38.1},{"cod":"3303305","nome":"Município 3303305","n":120,"consult":155,"nsp":23,"sus":3,"pct_sus":2.5,"pct_nsp":19.2},{"cod":"3303306","nome":"Município 3303306","n":117,"consult":178,"nsp":32,"sus":1,"pct_sus":0.9,"pct_nsp":27.4},{"cod":"3303301","nome":"Município 3303301","n":103,"consult":123,"nsp":17,"sus":0,"pct_sus":0.0,"pct_nsp":16.5},{"cod":"3301006","nome":"Município 3301006","n":102,"consult":125,"nsp":15,"sus":16,"pct_sus":15.7,"pct_nsp":14.7}],"dist_c":{"0":15,"1":7893,"2":1807,"3":550,"4":264,"5":116,"6":262}},{"uf":"RN","regiao":"Nordeste","n":2005,"consult":2732,"nsp":262,"sus":1228,"plano":587,"part":188,"pct_sus":61.2,"pct_nsp":13.1,"media_c":1.36,"n_mun":579,"top_mun":[{"cod":"2408105","nome":"Município 2408105","n":189,"consult":234,"nsp":13,"sus":0,"pct_sus":0.0,"pct_nsp":6.9},{"cod":"2408102","nome":"Natal/RN","n":93,"consult":260,"nsp":25,"sus":74,"pct_sus":79.6,"pct_nsp":26.9},{"cod":"2408103","nome":"Município 2408103","n":79,"consult":138,"nsp":10,"sus":7,"pct_sus":8.9,"pct_nsp":12.7},{"cod":"2408109","nome":"Município 2408109","n":71,"consult":114,"nsp":19,"sus":6,"pct_sus":8.5,"pct_nsp":26.8},{"cod":"2408106","nome":"Município 2408106","n":46,"consult":73,"nsp":7,"sus":5,"pct_sus":10.9,"pct_nsp":15.2},{"cod":"2408002","nome":"Município 2408002","n":44,"consult":61,"nsp":11,"sus":39,"pct_sus":88.6,"pct_nsp":25.0},{"cod":"2408003","nome":"Mossoró/RN","n":40,"consult":43,"nsp":2,"sus":8,"pct_sus":20.0,"pct_nsp":5.0},{"cod":"2408104","nome":"Município 2408104","n":38,"consult":72,"nsp":13,"sus":3,"pct_sus":7.9,"pct_nsp":34.2},{"cod":"2408100","nome":"Município 2408100","n":35,"consult":46,"nsp":5,"sus":1,"pct_sus":2.9,"pct_nsp":14.3},{"cod":"2408107","nome":"Município 2408107","n":31,"consult":48,"nsp":8,"sus":3,"pct_sus":9.7,"pct_nsp":25.8},{"cod":"2402006","nome":"Município 2402006","n":28,"consult":41,"nsp":3,"sus":1,"pct_sus":3.6,"pct_nsp":10.7},{"cod":"2402002","nome":"Município 2402002","n":24,"consult":27,"nsp":2,"sus":23,"pct_sus":95.8,"pct_nsp":8.3}],"dist_c":{"0":5,"1":1738,"2":140,"3":35,"4":40,"5":13,"6":34}},{"uf":"RO","regiao":"Norte","n":1541,"consult":2799,"nsp":514,"sus":286,"plano":203,"part":1048,"pct_sus":18.6,"pct_nsp":33.4,"media_c":1.82,"n_mun":226,"top_mun":[{"cod":"1100207","nome":"Município 1100207","n":152,"consult":434,"nsp":81,"sus":7,"pct_sus":4.6,"pct_nsp":53.3},{"cod":"1100209","nome":"Município 1100209","n":74,"consult":229,"nsp":63,"sus":2,"pct_sus":2.7,"pct_nsp":85.1},{"cod":"1100202","nome":"Município 1100202","n":48,"consult":89,"nsp":23,"sus":30,"pct_sus":62.5,"pct_nsp":47.9},{"cod":"1100127","nome":"Município 1100127","n":42,"consult":60,"nsp":10,"sus":4,"pct_sus":9.5,"pct_nsp":23.8},{"cod":"1100306","nome":"Município 1100306","n":42,"consult":68,"nsp":15,"sus":1,"pct_sus":2.4,"pct_nsp":35.7},{"cod":"1100049","nome":"Município 1100049","n":40,"consult":43,"nsp":3,"sus":2,"pct_sus":5.0,"pct_nsp":7.5},{"cod":"1100204","nome":"Município 1100204","n":39,"consult":103,"nsp":26,"sus":1,"pct_sus":2.6,"pct_nsp":66.7},{"cod":"1100047","nome":"Município 1100047","n":37,"consult":72,"nsp":12,"sus":2,"pct_sus":5.4,"pct_nsp":32.4},{"cod":"1100205","nome":"Porto Velho/RO","n":36,"consult":81,"nsp":16,"sus":7,"pct_sus":19.4,"pct_nsp":44.4},{"cod":"1100206","nome":"Município 1100206","n":36,"consult":113,"nsp":19,"sus":8,"pct_sus":22.2,"pct_nsp":52.8},{"cod":"1100046","nome":"Município 1100046","n":34,"consult":59,"nsp":14,"sus":2,"pct_sus":5.9,"pct_nsp":41.2},{"cod":"1100129","nome":"Município 1100129","n":33,"consult":60,"nsp":11,"sus":1,"pct_sus":3.0,"pct_nsp":33.3}],"dist_c":{"0":1,"1":1026,"2":275,"3":85,"4":77,"5":14,"6":63}},{"uf":"RR","regiao":"Norte","n":365,"consult":514,"nsp":71,"sus":225,"plano":63,"part":76,"pct_sus":61.6,"pct_nsp":19.5,"media_c":1.41,"n_mun":72,"top_mun":[{"cod":"1400107","nome":"Município 1400107","n":35,"consult":56,"nsp":10,"sus":5,"pct_sus":14.3,"pct_nsp":28.6},{"cod":"1400102","nome":"Município 1400102","n":31,"consult":46,"nsp":10,"sus":22,"pct_sus":71.0,"pct_nsp":32.3},{"cod":"1400106","nome":"Município 1400106","n":29,"consult":45,"nsp":7,"sus":7,"pct_sus":24.1,"pct_nsp":24.1},{"cod":"1400109","nome":"Município 1400109","n":28,"consult":50,"nsp":11,"sus":4,"pct_sus":14.3,"pct_nsp":39.3},{"cod":"1400105","nome":"Município 1400105","n":21,"consult":40,"nsp":7,"sus":6,"pct_sus":28.6,"pct_nsp":33.3},{"cod":"1400104","nome":"Município 1400104","n":20,"consult":49,"nsp":12,"sus":3,"pct_sus":15.0,"pct_nsp":60.0},{"cod":"1400407","nome":"Município 1400407","n":13,"consult":13,"nsp":0,"sus":13,"pct_sus":100.0,"pct_nsp":0.0},{"cod":"1400100","nome":"Boa Vista/RR","n":12,"consult":21,"nsp":4,"sus":2,"pct_sus":16.7,"pct_nsp":33.3},{"cod":"1400103","nome":"Município 1400103","n":10,"consult":22,"nsp":4,"sus":4,"pct_sus":40.0,"pct_nsp":40.0},{"cod":"1400172","nome":"Município 1400172","n":9,"consult":9,"nsp":0,"sus":9,"pct_sus":100.0,"pct_nsp":0.0},{"cod":"1400202","nome":"Município 1400202","n":8,"consult":8,"nsp":0,"sus":8,"pct_sus":100.0,"pct_nsp":0.0},{"cod":"1400152","nome":"Município 1400152","n":7,"consult":7,"nsp":0,"sus":7,"pct_sus":100.0,"pct_nsp":0.0}],"dist_c":{"1":294,"2":35,"3":16,"4":8,"5":5,"6":7}},{"uf":"RS","regiao":"Sul","n":8456,"consult":12208,"nsp":1718,"sus":2692,"plano":3270,"part":2487,"pct_sus":31.8,"pct_nsp":20.3,"media_c":1.44,"n_mun":1784,"top_mun":[{"cod":"4314905","nome":"Município 4314905","n":275,"consult":349,"nsp":30,"sus":3,"pct_sus":1.1,"pct_nsp":10.9},{"cod":"4314903","nome":"Município 4314903","n":186,"consult":262,"nsp":47,"sus":3,"pct_sus":1.6,"pct_nsp":25.3},{"cod":"4314909","nome":"Município 4314909","n":159,"consult":173,"nsp":8,"sus":1,"pct_sus":0.6,"pct_nsp":5.0},{"cod":"4314906","nome":"Município 4314906","n":144,"consult":168,"nsp":5,"sus":9,"pct_sus":6.2,"pct_nsp":3.5},{"cod":"4314904","nome":"Município 4314904","n":113,"consult":117,"nsp":2,"sus":1,"pct_sus":0.9,"pct_nsp":1.8},{"cod":"4314907","nome":"Município 4314907","n":113,"consult":128,"nsp":7,"sus":12,"pct_sus":10.6,"pct_nsp":6.2},{"cod":"4314902","nome":"Porto Alegre/RS","n":102,"consult":144,"nsp":12,"sus":83,"pct_sus":81.4,"pct_nsp":11.8},{"cod":"4314900","nome":"Município 4314900","n":83,"consult":101,"nsp":2,"sus":5,"pct_sus":6.0,"pct_nsp":2.4},{"cod":"4314402","nome":"Município 4314402","n":79,"consult":226,"nsp":7,"sus":41,"pct_sus":51.9,"pct_nsp":8.9},{"cod":"4314409","nome":"Município 4314409","n":67,"consult":111,"nsp":21,"sus":1,"pct_sus":1.5,"pct_nsp":31.3},{"cod":"4316805","nome":"Município 4316805","n":66,"consult":72,"nsp":3,"sus":0,"pct_sus":0.0,"pct_nsp":4.5},{"cod":"4305107","nome":"Município 4305107","n":55,"consult":166,"nsp":30,"sus":8,"pct_sus":14.5,"pct_nsp":54.5}],"dist_c":{"0":18,"1":6720,"2":1048,"3":304,"4":167,"5":68,"6":131}},{"uf":"SC","regiao":"Sul","n":8238,"consult":12963,"nsp":2225,"sus":2041,"plano":2702,"part":3478,"pct_sus":24.8,"pct_nsp":27.0,"media_c":1.57,"n_mun":1227,"top_mun":[{"cod":"4209102","nome":"Joinville/SC","n":279,"consult":361,"nsp":46,"sus":36,"pct_sus":12.9,"pct_nsp":16.5},{"cod":"4205405","nome":"Município 4205405","n":169,"consult":291,"nsp":67,"sus":3,"pct_sus":1.8,"pct_nsp":39.6},{"cod":"4205400","nome":"Município 4205400","n":157,"consult":340,"nsp":80,"sus":31,"pct_sus":19.7,"pct_nsp":51.0},{"cod":"4209302","nome":"Município 4209302","n":152,"consult":179,"nsp":18,"sus":26,"pct_sus":17.1,"pct_nsp":11.8},{"cod":"4204202","nome":"Município 4204202","n":131,"consult":168,"nsp":24,"sus":26,"pct_sus":19.8,"pct_nsp":18.3},{"cod":"4205406","nome":"Município 4205406","n":122,"consult":198,"nsp":41,"sus":4,"pct_sus":3.3,"pct_nsp":33.6},{"cod":"4205409","nome":"Município 4205409","n":101,"consult":202,"nsp":52,"sus":2,"pct_sus":2.0,"pct_nsp":51.5},{"cod":"4205404","nome":"Município 4205404","n":97,"consult":168,"nsp":44,"sus":4,"pct_sus":4.1,"pct_nsp":45.4},{"cod":"4202406","nome":"Município 4202406","n":90,"consult":137,"nsp":18,"sus":10,"pct_sus":11.1,"pct_nsp":20.0},{"cod":"4208209","nome":"Município 4208209","n":89,"consult":161,"nsp":34,"sus":2,"pct_sus":2.2,"pct_nsp":38.2},{"cod":"4208902","nome":"Município 4208902","n":86,"consult":122,"nsp":19,"sus":21,"pct_sus":24.4,"pct_nsp":22.1},{"cod":"4209105","nome":"Município 4209105","n":84,"consult":141,"nsp":29,"sus":3,"pct_sus":3.6,"pct_nsp":34.5}],"dist_c":{"0":8,"1":6005,"2":1338,"3":388,"4":245,"5":88,"6":166}},{"uf":"SE","regiao":"Nordeste","n":1034,"consult":1320,"nsp":138,"sus":565,"plano":309,"part":157,"pct_sus":54.6,"pct_nsp":13.3,"media_c":1.28,"n_mun":253,"top_mun":[{"cod":"2800306","nome":"Município 2800306","n":136,"consult":167,"nsp":13,"sus":3,"pct_sus":2.2,"pct_nsp":9.6},{"cod":"2800300","nome":"Município 2800300","n":67,"consult":99,"nsp":16,"sus":46,"pct_sus":68.7,"pct_nsp":23.9},{"cod":"2800303","nome":"Município 2800303","n":58,"consult":78,"nsp":6,"sus":4,"pct_sus":6.9,"pct_nsp":10.3},{"cod":"2800305","nome":"Município 2800305","n":36,"consult":52,"nsp":8,"sus":1,"pct_sus":2.8,"pct_nsp":22.2},{"cod":"2800309","nome":"Município 2800309","n":34,"consult":46,"nsp":4,"sus":4,"pct_sus":11.8,"pct_nsp":11.8},{"cod":"2800307","nome":"Município 2800307","n":32,"consult":36,"nsp":4,"sus":0,"pct_sus":0.0,"pct_nsp":12.5},{"cod":"2804802","nome":"Município 2804802","n":18,"consult":18,"nsp":0,"sus":17,"pct_sus":94.4,"pct_nsp":0.0},{"cod":"2800308","nome":"Aracaju/SE","n":17,"consult":17,"nsp":0,"sus":1,"pct_sus":5.9,"pct_nsp":0.0},{"cod":"2800304","nome":"Município 2800304","n":17,"consult":17,"nsp":0,"sus":0,"pct_sus":0.0,"pct_nsp":0.0},{"cod":"2802902","nome":"Município 2802902","n":14,"consult":15,"nsp":1,"sus":14,"pct_sus":100.0,"pct_nsp":7.1},{"cod":"2803502","nome":"Município 2803502","n":14,"consult":16,"nsp":2,"sus":14,"pct_sus":100.0,"pct_nsp":14.3},{"cod":"2806702","nome":"Município 2806702","n":11,"consult":11,"nsp":0,"sus":11,"pct_sus":100.0,"pct_nsp":0.0}],"dist_c":{"0":1,"1":895,"2":83,"3":20,"4":18,"5":6,"6":11}},{"uf":"SP","regiao":"Sudeste","n":35640,"consult":55112,"nsp":9280,"sus":5866,"plano":20432,"part":9287,"pct_sus":16.5,"pct_nsp":26.0,"media_c":1.55,"n_mun":3219,"top_mun":[{"cod":"3550306","nome":"São Paulo/SP","n":1736,"consult":2623,"nsp":511,"sus":38,"pct_sus":2.2,"pct_nsp":29.4},{"cod":"3550305","nome":"São Paulo/SP","n":1595,"consult":2563,"nsp":570,"sus":17,"pct_sus":1.1,"pct_nsp":35.7},{"cod":"3550309","nome":"São Paulo/SP","n":1504,"consult":2380,"nsp":542,"sus":30,"pct_sus":2.0,"pct_nsp":36.0},{"cod":"3550307","nome":"São Paulo/SP","n":1479,"consult":2205,"nsp":398,"sus":21,"pct_sus":1.4,"pct_nsp":26.9},{"cod":"3550304","nome":"São Paulo/SP","n":1107,"consult":1840,"nsp":370,"sus":46,"pct_sus":4.2,"pct_nsp":33.4},{"cod":"3550303","nome":"São Paulo/SP","n":899,"consult":1269,"nsp":209,"sus":47,"pct_sus":5.2,"pct_nsp":23.2},{"cod":"3550300","nome":"São Paulo/SP","n":764,"consult":1173,"nsp":246,"sus":8,"pct_sus":1.0,"pct_nsp":32.2},{"cod":"3550302","nome":"São Paulo/SP","n":678,"consult":1259,"nsp":172,"sus":398,"pct_sus":58.7,"pct_nsp":25.4},{"cod":"3509506","nome":"Município 3509506","n":411,"consult":571,"nsp":78,"sus":14,"pct_sus":3.4,"pct_nsp":19.0},{"cod":"3550308","nome":"São Paulo/SP","n":297,"consult":453,"nsp":105,"sus":4,"pct_sus":1.3,"pct_nsp":35.4},{"cod":"3550301","nome":"São Paulo/SP","n":292,"consult":440,"nsp":138,"sus":0,"pct_sus":0.0,"pct_nsp":47.3},{"cod":"3543406","nome":"Município 3543406","n":238,"consult":320,"nsp":36,"sus":51,"pct_sus":21.4,"pct_nsp":15.1}],"dist_c":{"0":48,"1":26312,"2":5787,"3":1679,"4":815,"5":383,"6":616}},{"uf":"TO","regiao":"Norte","n":812,"consult":1248,"nsp":200,"sus":496,"plano":164,"part":151,"pct_sus":61.1,"pct_nsp":24.6,"media_c":1.54,"n_mun":329,"top_mun":[{"cod":"1721002","nome":"Município 1721002","n":52,"consult":111,"nsp":25,"sus":31,"pct_sus":59.6,"pct_nsp":48.1},{"cod":"1721003","nome":"Município 1721003","n":40,"consult":57,"nsp":8,"sus":4,"pct_sus":10.0,"pct_nsp":20.0},{"cod":"1721009","nome":"Município 1721009","n":30,"consult":58,"nsp":11,"sus":3,"pct_sus":10.0,"pct_nsp":36.7},{"cod":"1702102","nome":"Município 1702102","n":18,"consult":28,"nsp":3,"sus":18,"pct_sus":100.0,"pct_nsp":16.7},{"cod":"1721006","nome":"Município 1721006","n":17,"consult":46,"nsp":9,"sus":2,"pct_sus":11.8,"pct_nsp":52.9},{"cod":"1709502","nome":"Município 1709502","n":16,"consult":24,"nsp":5,"sus":14,"pct_sus":87.5,"pct_nsp":31.2},{"cod":"1718202","nome":"Município 1718202","n":15,"consult":19,"nsp":3,"sus":15,"pct_sus":100.0,"pct_nsp":20.0},{"cod":"1721005","nome":"Município 1721005","n":15,"consult":25,"nsp":5,"sus":3,"pct_sus":20.0,"pct_nsp":33.3},{"cod":"1721007","nome":"Município 1721007","n":14,"consult":28,"nsp":4,"sus":2,"pct_sus":14.3,"pct_nsp":28.6},{"cod":"1709509","nome":"Município 1709509","n":13,"consult":18,"nsp":1,"sus":2,"pct_sus":15.4,"pct_nsp":7.7},{"cod":"1721004","nome":"Município 1721004","n":12,"consult":24,"nsp":7,"sus":1,"pct_sus":8.3,"pct_nsp":58.3},{"cod":"1709507","nome":"Município 1709507","n":12,"consult":15,"nsp":2,"sus":1,"pct_sus":8.3,"pct_nsp":16.7}],"dist_c":{"1":612,"2":123,"3":44,"4":9,"5":11,"6":13}}],"risco_uf":[{"uf":"PI","regiao":"Nordeste","pct_sus":77.3,"pct_1c":85.7,"idx":66.2,"n":1933},{"uf":"MA","regiao":"Nordeste","pct_sus":74.4,"pct_1c":82.1,"idx":61.1,"n":2605},{"uf":"PB","regiao":"Nordeste","pct_sus":66.6,"pct_1c":87.3,"idx":58.1,"n":2798},{"uf":"RN","regiao":"Nordeste","pct_sus":61.2,"pct_1c":86.9,"idx":53.2,"n":2005},{"uf":"AL","regiao":"Nordeste","pct_sus":61.0,"pct_1c":85.3,"idx":52.0,"n":1650},{"uf":"RR","regiao":"Norte","pct_sus":61.6,"pct_1c":80.5,"idx":49.6,"n":365},{"uf":"AC","regiao":"Norte","pct_sus":56.4,"pct_1c":85.1,"idx":48.0,"n":505},{"uf":"SE","regiao":"Nordeste","pct_sus":54.6,"pct_1c":86.7,"idx":47.3,"n":1034},{"uf":"PE","regiao":"Nordeste","pct_sus":56.4,"pct_1c":83.7,"idx":47.2,"n":4855},{"uf":"TO","regiao":"Norte","pct_sus":61.1,"pct_1c":75.4,"idx":46.1,"n":812},{"uf":"AM","regiao":"Norte","pct_sus":54.9,"pct_1c":73.2,"idx":40.2,"n":1561},{"uf":"PA","regiao":"Norte","pct_sus":49.8,"pct_1c":78.7,"idx":39.2,"n":3247},{"uf":"BA","regiao":"Nordeste","pct_sus":46.6,"pct_1c":79.0,"idx":36.8,"n":8185},{"uf":"CE","regiao":"Nordeste","pct_sus":39.1,"pct_1c":80.4,"idx":31.4,"n":5898},{"uf":"MS","regiao":"Centro-Oeste","pct_sus":38.8,"pct_1c":79.1,"idx":30.7,"n":2116},{"uf":"MT","regiao":"Centro-Oeste","pct_sus":36.8,"pct_1c":78.9,"idx":29.0,"n":2507},{"uf":"GO","regiao":"Centro-Oeste","pct_sus":33.8,"pct_1c":79.0,"idx":26.7,"n":4800},{"uf":"RS","regiao":"Sul","pct_sus":31.8,"pct_1c":79.7,"idx":25.3,"n":8456},{"uf":"AP","regiao":"Norte","pct_sus":35.3,"pct_1c":69.4,"idx":24.5,"n":385},{"uf":"MG","regiao":"Sudeste","pct_sus":30.0,"pct_1c":74.8,"idx":22.4,"n":19432},{"uf":"ES","regiao":"Sudeste","pct_sus":27.7,"pct_1c":73.7,"idx":20.4,"n":3404},{"uf":"PR","regiao":"Sul","pct_sus":25.7,"pct_1c":73.3,"idx":18.8,"n":10240},{"uf":"SC","regiao":"Sul","pct_sus":24.8,"pct_1c":73.0,"idx":18.1,"n":8238},{"uf":"RJ","regiao":"Sudeste","pct_sus":22.2,"pct_1c":72.5,"idx":16.1,"n":10907},{"uf":"RO","regiao":"Norte","pct_sus":18.6,"pct_1c":66.6,"idx":12.4,"n":1541},{"uf":"SP","regiao":"Sudeste","pct_sus":16.5,"pct_1c":74.0,"idx":12.2,"n":35640},{"uf":"DF","regiao":"Centro-Oeste","pct_sus":6.4,"pct_1c":59.2,"idx":3.8,"n":3090}]};
+const RC={Norte:'#EF9F27',Nordeste:'#E24B4A','Centro-Oeste':'#7F77DD',Sudeste:'#185FA5',Sul:'#1D9E75'};
+const TC={Norte:'#7A4000',Nordeste:'#5C0D0D','Centro-Oeste':'#221F62',Sudeste:'#042C53',Sul:'#04342C'};
+const BG={Norte:'#F9E8C0',Nordeste:'#FAD5D5','Centro-Oeste':'#DEDCF8',Sudeste:'#C8DBF2',Sul:'#C8EEE0'};
+let ST={reg:'',uf:''};
+let distC=null, tblK='n', tblA=false;
+const fmt=n=>n.toLocaleString('pt-BR');
+const pct=(v,t)=>t?(v/t*100).toFixed(1):'0';
+
+function popUF(){
+  const sel=document.getElementById('f-uf');
+  const ufs=ST.reg?DB.ufs.filter(u=>u.regiao===ST.reg):DB.ufs;
+  sel.innerHTML='<option value="">Todos os estados</option>'+ufs.map(u=>`<option value="${u.uf}">${u.uf} — ${u.regiao}</option>`).join('');
+  if(ST.uf&&ufs.find(u=>u.uf===ST.uf))sel.value=ST.uf;else if(ST.uf){ST.uf='';sel.value='';}
+}
+
+function getFD(){
+  if(ST.uf)return{t:'uf',d:DB.ufs.find(u=>u.uf===ST.uf)};
+  if(ST.reg)return{t:'reg',d:DB.regioes.find(r=>r.regiao===ST.reg),ufs:DB.ufs.filter(u=>u.regiao===ST.reg)};
+  return{t:'br',d:DB.meta,regioes:DB.regioes,ufs:DB.ufs};
+}
+
+function apply(){
+  const fd=getFD();
+  updKPI(fd);updScope(fd);
+  rendBarsE(fd);rendBarsS(fd);rendStacked(fd);rendBarsN(fd);
+  rendTbl(fd);rendMun(fd);rendDistUF(fd);
+}
+
+function updScope(fd){
+  const el=document.getElementById('f-scope');
+  const n=fd.t==='br'?DB.meta.total_estab:fd.t==='reg'?fd.d.n:fd.d.n;
+  el.textContent=`${ST.uf||ST.reg||'Brasil'} · ${fmt(n)} estabelecimentos`;
+}
+
+function updKPI(fd){
+  let e,c,n,s;
+  if(fd.t==='br'){e=DB.meta.total_estab;c=DB.meta.total_consult;n=DB.meta.obriga_nsp;s=DB.ufs.reduce((a,u)=>a+u.sus,0);}
+  else if(fd.t==='reg'){const r=fd.d;e=r.n;c=r.consult;n=r.nsp;s=r.sus;}
+  else{const u=fd.d;e=u.n;c=u.consult;n=u.nsp;s=u.sus;}
+  document.getElementById('k-e').textContent=fmt(e);
+  document.getElementById('k-c').textContent=fmt(c);
+  document.getElementById('k-n').textContent=fmt(n);
+  document.getElementById('k-s').textContent=fmt(s);
+  document.getElementById('k-es').textContent=fd.t==='br'?'universo completo':fd.t==='reg'?`região ${ST.reg}`:`estado ${ST.uf}`;
+  document.getElementById('k-cs').textContent=`média: ${(c/e).toFixed(2)} por estab.`;
+  document.getElementById('k-ns').textContent=`${(n/e*100).toFixed(1)}% do total`;
+  document.getElementById('k-ss').textContent=`${(s/e*100).toFixed(1)}% do total`;
+}
+
+function rendBarsE(fd){
+  const el=document.getElementById('bars-e');
+  let rows;
+  if(fd.t==='br')rows=DB.regioes.map(r=>{return{l:r.regiao,v:r.n,v2:r.consult,c:RC[r.regiao]}});
+  else if(fd.t==='reg')rows=fd.ufs.map(u=>{return{l:u.uf,v:u.n,v2:u.consult,c:RC[u.regiao]}});
+  else rows=(fd.d.top_mun||[]).slice(0,6).map(m=>{return{l:m.nome.split('/')[0].substring(0,14),v:m.n,v2:m.consult,c:RC[fd.d.regiao]}});
+  const mx=Math.max(...rows.map(r=>r.v));
+  el.innerHTML=rows.map(r=>`<div class="br"><div class="bl">${r.l}</div><div class="bt"><div class="bf" style="width:${Math.round(r.v/mx*100)}%;background:${r.c}"><span>${fmt(r.v)}</span></div></div><div class="bc">${(r.v2/1000).toFixed(1)}k</div></div>`).join('');
+}
+
+function rendBarsS(fd){
+  const el=document.getElementById('bars-s');
+  let rows;
+  if(fd.t==='br')rows=DB.regioes.map(r=>{return{l:r.regiao,p:r.pct_sus,n:r.sus}});
+  else if(fd.t==='reg')rows=fd.ufs.map(u=>{return{l:u.uf,p:u.pct_sus,n:u.sus}});
+  else rows=[{l:fd.d.uf,p:fd.d.pct_sus,n:fd.d.sus}];
+  const mx=80;
+  el.innerHTML=rows.map(r=>{
+    const c=r.p>50?'#185FA5':r.p>30?'#1D9E75':'#BA7517';
+    return `<div class="br"><div class="bl">${r.l}</div><div class="bt"><div class="bf" style="width:${Math.round(Math.min(r.p,mx)/mx*100)}%;background:${c}"><span>${r.p}%</span></div></div><div class="bc">${fmt(r.n)}</div></div>`;
+  }).join('');
+}
+
+function rendStacked(fd){
+  const el=document.getElementById('stacked');
+  let rows;
+  if(fd.t==='br')rows=DB.regioes.map(r=>{return{l:r.regiao,n:r.n,s:r.sus,p:r.plano,a:r.part}});
+  else if(fd.t==='reg')rows=fd.ufs.map(u=>{return{l:u.uf,n:u.n,s:u.sus,p:u.plano,a:u.part}});
+  else{const u=fd.d;rows=[{l:u.uf,n:u.n,s:u.sus,p:u.plano,a:u.part}];}
+  // Usar n como denominador — garante consistência com a barra % SUS
+  // "outros" = n - s - p - a (sem convênio registrado no SCNES: 0,18% do total)
+  const segs=[
+    {k:'s',c:'#185FA5',lbl:'SUS'},
+    {k:'p',c:'#BA7517',lbl:'Plano'},
+    {k:'a',c:'#A32D2D',lbl:'Part.'},
+  ];
+  el.innerHTML=rows.map(r=>{
+    const n=r.n;
+    const outros=Math.max(0,n-r.s-r.p-r.a);
+    const bars=segs.map(sg=>{
+      const w=n?(r[sg.k]/n*100):0;
+      const wr=Math.round(w*10)/10;
+      return wr>=1?`<div class="ss" style="width:${wr}%;background:${sg.c}">${wr>=5?`<span>${wr.toFixed(1)}%</span>`:''}</div>`:'';
+    }).join('')+(outros>0?`<div class="ss" style="width:${(outros/n*100).toFixed(1)}%;background:#C8C6BC"></div>`:'');
+    return `<div class="sr"><div class="sl">${r.l}</div><div class="sb">${bars}</div><div class="st">${fmt(n)}</div></div>`;
+  }).join('');
+}
+
+function rendBarsN(fd){
+  const el=document.getElementById('bars-n');
+  let rows;
+  if(fd.t==='br')rows=DB.regioes.map(r=>{return{l:r.regiao,p:r.pct_nsp,n:r.nsp}});
+  else if(fd.t==='reg')rows=fd.ufs.map(u=>{return{l:u.uf,p:u.pct_nsp,n:u.nsp}});
+  else rows=[{l:fd.d.uf,p:fd.d.pct_nsp,n:fd.d.nsp}];
+  const mx=45;
+  el.innerHTML=rows.map(r=>{
+    const c=r.p>30?'#A32D2D':r.p>22?'#BA7517':'#1D9E75';
+    return `<div class="br"><div class="bl">${r.l}</div><div class="bt"><div class="bf" style="width:${Math.round(Math.min(r.p,mx)/mx*100)}%;background:${c}"><span>${r.p}%</span></div></div><div class="bc">${fmt(r.n)}</div></div>`;
+  }).join('');
+}
+
+function rendTbl(fd){
+  const rows=fd.t==='br'?DB.ufs:fd.t==='reg'?fd.ufs:[fd.d];
+  const s=[...rows].sort((a,b)=>tblA?a[tblK]-b[tblK]:b[tblK]-a[tblK]);
+  document.getElementById('tbl-tit').textContent=fd.t==='br'?'Todos os estados':fd.t==='reg'?`Região ${ST.reg}`:`Estado: ${ST.uf}`;
+  document.getElementById('uf-tb').innerHTML=s.map(u=>{
+    const tot=u.sus+u.plano+u.part;
+    const wS=tot?Math.round(u.sus/tot*100):0,wP=tot?Math.round(u.plano/tot*100):0,wPr=tot?Math.round(u.part/tot*100):0;
+    const nc=u.pct_nsp>30?'#A32D2D':u.pct_nsp>20?'#BA7517':'#0B6E5A';
+    const sc=u.pct_sus>60?'#185FA5':u.pct_sus>35?'#1D9E75':'#888780';
+    return `<tr onclick="selUF('${u.uf}')">
+      <td><strong style="font-family:var(--mono)">${u.uf}</strong></td>
+      <td><span class="treg" style="background:${BG[u.regiao]};color:${TC[u.regiao]}">${u.regiao}</span></td>
+      <td class="num">${fmt(u.n)}</td><td class="num">${fmt(u.consult)}</td>
+      <td class="num" style="color:${sc};font-weight:600">${u.pct_sus}%</td>
+      <td class="num">${fmt(u.nsp)}</td>
+      <td class="num" style="color:${nc};font-weight:600">${u.pct_nsp}%</td>
+      <td class="num">${fmt(u.sus)}</td><td class="num">${fmt(u.plano)}</td><td class="num">${fmt(u.part)}</td>
+      <td><div class="mb"><div style="width:${wS}%;background:#185FA5"></div><div style="width:${wP}%;background:#BA7517"></div><div style="width:${wPr}%;background:#A32D2D"></div></div></td>
+      <td class="num">${fmt(u.n_mun)}</td>
+    </tr>`;
+  }).join('');
+}
+window.selUF=function(uf){
+  ST.uf=uf;ST.reg=DB.ufs.find(u=>u.uf===uf).regiao;
+  document.getElementById('f-reg').value=ST.reg;
+  popUF();document.getElementById('f-uf').value=uf;
+  apply();document.getElementById('detalhes').scrollIntoView({behavior:'smooth'});
+};
+
+function rendMun(fd){
+  const el=document.getElementById('bars-m');
+  const tit=document.getElementById('mun-tit');
+  let muns=[];
+  if(fd.t==='uf'){muns=fd.d.top_mun||[];tit.textContent=`Top municípios — ${fd.d.uf}`;}
+  else if(fd.t==='reg'){
+    const all=(fd.ufs||[]).flatMap(u=>(u.top_mun||[]).map(m=>{return{...m,uf:u.uf}}));
+    muns=all.sort((a,b)=>b.n-a.n).slice(0,8);tit.textContent=`Top municípios — ${ST.reg}`;
+  }else{
+    const all=DB.ufs.flatMap(u=>(u.top_mun||[]).map(m=>{return{...m,uf:u.uf}}));
+    muns=all.sort((a,b)=>b.n-a.n).slice(0,8);tit.textContent='Top municípios — Brasil';
+  }
+  if(!muns.length){el.innerHTML='<p style="font-size:.8rem;color:var(--ink-4);padding:.4rem 0">Selecione um estado para ver os municípios</p>';return;}
+  const mx=muns[0].n;
+  el.innerHTML=muns.map(m=>{
+    const reg=fd.t==='uf'?fd.d.regiao:(m.uf?DB.ufs.find(u=>u.uf===m.uf)?.regiao||'Sudeste':'Sudeste');
+    const nome=m.nome.length>18?m.nome.substring(0,18)+'…':m.nome;
+    return `<div class="br"><div class="bl s">${nome}</div><div class="bt"><div class="bf" style="width:${Math.round(m.n/mx*100)}%;background:${RC[reg]||'#888'}"><span>${fmt(m.n)}</span></div></div><div class="bc" style="font-size:.66rem">${m.pct_sus}% SUS</div></div>`;
+  }).join('');
+}
+
+function rendDistUF(fd){
+  const tit=document.getElementById('dist-tit');
+  let dist,label;
+  if(fd.t==='uf'){dist=fd.d.dist_c;label=fd.d.uf;}
+  else if(fd.t==='reg'){
+    dist={};(fd.ufs||[]).forEach(u=>{Object.entries(u.dist_c).forEach(([k,v])=>{dist[k]=(dist[k]||0)+v;});});
+    label=ST.reg;
+  }else{dist=DB.meta.dist_consult;label='Brasil';}
+  tit.textContent=`Distribuição consultórios — ${label}`;
+  const labs=Object.keys(dist).map(k=>k==='6'?'6+':k).map(l=>`${l} c.`);
+  const vals=Object.values(dist);
+  const cols=['#185FA5','#A32D2D','#D85A30','#BA7517','#888780','#B4B2A9','#D3D1C7'];
+  if(distC&&distC.destroy)distC.destroy();
+  const cnv=document.getElementById('dist-uf');if(cnv){distC=new Chart(cnv,{
+    type:'doughnut',
+    data:{labels:labs,datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#F5F4F0'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:true,position:'right',labels:{font:{size:10},boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${fmt(ctx.raw)} (${(ctx.raw/vals.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)`}}
+    },cutout:'58%'}
+  });}
+}
+
+// Charts fixos
+(function(){
+  const d=DB.meta.dist_consult;
+  const labs=Object.keys(d).map(k=>k==='6'?'6+':k).map(l=>`${l} consult.`);
+  const vals=Object.values(d);
+  const cols=['#185FA5','#A32D2D','#D85A30','#BA7517','#888780','#B4B2A9','#D3D1C7'];
+  new Chart(document.getElementById('dist-nac'),{
+    type:'doughnut',
+    data:{labels:labs,datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#F5F4F0'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${fmt(ctx.raw)} (${(ctx.raw/DB.meta.total_estab*100).toFixed(1)}%)`}}
+    },cutout:'62%'}
+  });
+})();
+
+(function(){
+  const data=DB.risco_uf.map(u=>{return{x:u.pct_sus,y:u.pct_1c,r:Math.max(4,Math.round(u.n/1400)),label:u.uf}});
+  new Chart(document.getElementById('scatter'),{
+    type:'bubble',
+    data:{datasets:[{data,backgroundColor:DB.risco_uf.map(u=>RC[u.regiao]+'BB'),borderColor:DB.risco_uf.map(u=>RC[u.regiao]),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>{
+        const u=DB.risco_uf[ctx.dataIndex];
+        return [`${u.uf} (${u.regiao})`,`% SUS: ${u.pct_sus}%`,`% 1 consult.: ${u.pct_1c}%`,`Risco: ${u.idx}`,`Estab.: ${fmt(u.n)}`];
+      }}}
+    },scales:{
+      x:{title:{display:true,text:'% atendimento SUS',font:{size:10}},min:0,max:85,grid:{color:'#E2E1DC'},ticks:{font:{size:9},callback:v=>v+'%'}},
+      y:{title:{display:true,text:'% consultório único',font:{size:10}},min:55,max:95,grid:{color:'#E2E1DC'},ticks:{font:{size:9},callback:v=>v+'%'}}
+    }}
+  });
+})();
+
+(function(){
+  const el=document.getElementById('bars-r');
+  const top=DB.risco_uf.slice(0,12);const mx=top[0].idx;
+  el.innerHTML=top.map(u=>{
+    const c=u.idx>55?'#A32D2D':u.idx>40?'#D85A30':u.idx>25?'#BA7517':'#888780';
+    return `<div class="br"><div class="bl xs" style="font-family:var(--mono);font-weight:600;color:${c}">${u.uf}</div><div class="bt"><div class="bf" style="width:${Math.round(u.idx/mx*100)}%;background:${c}"><span>${u.idx}</span></div></div><div class="bc" style="font-size:.66rem">${u.pct_sus}% SUS</div></div>`;
+  }).join('');
+})();
+
+(function(){
+  const el=document.getElementById('heatmap');
+  const cols=[
+    {k:u=>u.pct_sus,l:'% SUS',hi:'red'},
+    {k:u=>u.pct_nsp,l:'% NSP',hi:'green'},
+    {k:u=>+(100-u.pct_nsp).toFixed(1),l:'% 1-c.',hi:'red'},
+    {k:u=>u.media_c,l:'Média c.',hi:'green'},
+    {k:u=>+pct(u.plano,u.n),l:'% Plano',hi:'n'},
+    {k:u=>+pct(u.part,u.n),l:'% Part.',hi:'n'},
+  ];
+  const ufs=DB.ufs;
+  const ranges=cols.map(c=>{
+    const vs=ufs.map(u=>c.k(u));return{mn:Math.min(...vs),mx:Math.max(...vs)};
+  });
+  function cc(val,mn,mx,hi){
+    const t=mx===mn?0.5:(val-mn)/(mx-mn);
+    if(hi==='n')return`hsl(220,12%,${Math.round(85-t*22)}%)`;
+    const [hl,hh]=hi==='green'?[0,140]:[140,0];
+    return`hsl(${Math.round(hl+t*(hh-hl))},${65}%,${Math.round(70-t*26)}%)`;
+  }
+  const ro=['Norte','Nordeste','Centro-Oeste','Sudeste','Sul'];
+  const sorted=[...ufs].sort((a,b)=>ro.indexOf(a.regiao)-ro.indexOf(b.regiao));
+  const hdr=`<div style="display:flex;gap:2px;margin-bottom:3px;padding-left:42px">
+    ${cols.map(c=>`<div style="flex:1;font-size:.61rem;font-weight:600;color:var(--ink-3);font-family:var(--mono);text-align:center;padding:2px;white-space:nowrap;overflow:hidden">${c.l}</div>`).join('')}
+  </div>`;
+  const rows=sorted.map(u=>{
+    const cells=cols.map((c,i)=>{
+      const v=c.k(u);
+      return`<div class="hm-cell" style="flex:1;background:${cc(v,ranges[i].mn,ranges[i].mx,c.hi)};min-width:50px" title="${c.l}: ${v}">${v}%</div>`;
+    }).join('');
+    return`<div class="hm-row"><div class="hm-uf" style="color:${RC[u.regiao]}">${u.uf}</div>${cells}</div>`;
+  }).join('');
+  el.innerHTML=hdr+rows;
+})();
+
+// Eventos
+document.getElementById('f-reg').addEventListener('change',function(){ST.reg=this.value;ST.uf='';popUF();apply();});
+document.getElementById('f-uf').addEventListener('change',function(){ST.uf=this.value;apply();});
+document.getElementById('btn-rst').addEventListener('click',function(){ST={reg:'',uf:''};document.getElementById('f-reg').value='';popUF();apply();});
+document.getElementById('tbl-sort').addEventListener('change',function(){tblK=this.value;rendTbl(getFD());});
+document.querySelectorAll('.dtbl th[data-k]').forEach(th=>{
+  th.addEventListener('click',function(){
+    const k=this.dataset.k;
+    if(tblK===k)tblA=!tblA;else{tblK=k;tblA=false;}
+    rendTbl(getFD());
+  });
+});
+
+popUF();apply();
+</script>
+</body>
+</html>
